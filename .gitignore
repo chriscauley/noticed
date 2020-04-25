@@ -1,0 +1,20 @@
+# node related
+.cache
+dist
+node_modules
+
+# django related
+.venv
+.media
+.static
+__pycache__
+
+# misc
+trash
+.DS_Store
+unrest
+server/settings/local.py
+_scripts
+.coverage
+.backups
+.htmlcov

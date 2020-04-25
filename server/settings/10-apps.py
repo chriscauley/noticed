@@ -8,6 +8,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.gis',
     'server',
+    'location',
+    'media',
     'unrest.nopass',
     'unrest.user',
 ]

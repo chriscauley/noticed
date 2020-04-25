@@ -6,8 +6,8 @@ import pytesseract
 
 def get_geocode(query):
     BASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?{query}&key={key}'
-    url = self.BASE_URL.format(self.query, settings.GOOGLE_MAPS_API_KEY)
-    request = requests.get(self.BASE_URL + self.query)
+    url = BASE_URL.format(query=query, key=settings.GOOGLE_MAPS_API_KEY)
+    request = requests.get(url)
     request.raise_for_status()
     return request.json()
 

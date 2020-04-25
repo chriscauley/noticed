@@ -1,4 +1,5 @@
-from django.db import models
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 from django.contrib.postgres.fields import JSONField
 
 from unrest.models import BaseModel, _choices
@@ -10,21 +11,36 @@ class BaseLocationModel(BaseModel):
         abstract = True
 
     name = models.CharField(max_length=256)
-    lat = models.FloatField()
-    lon = models.FloatField()
+    latlon = models.PointField()
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.latlon:
+            geocode, new = Geocode.objects.get_or_create(query='address=' + self.get_address())
+            results = geocode.result.get('results', [])
+            if not results:
+                raise NotImplementedError("Not setup to handle missing result")
+            location = results[0]['geometry']['location']
+            self.latlon = Point(location['lng'], location['lat'])
+        super().save(*args, **kwargs)
 
 
 class City(BaseLocationModel):
     state = models.CharField(max_length=2)
     country = models.CharField(max_length=2)
 
+    def get_address(self):
+        return f"{self.name}, {self.state}"
+
 
 class Location(BaseLocationModel):
     city = models.ForeignKey("City", on_delete=models.CASCADE)
     zipcode = models.CharField(max_length=5)
+
+    def get_address(self):
+        return f"{self.name}, {self.city.get_address()}, {self.zipcode}"
 
 
 class Notice(BaseModel):

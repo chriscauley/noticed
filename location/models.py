@@ -13,6 +13,10 @@ class BaseLocationModel(BaseModel):
     name = models.CharField(max_length=256)
     point = models.PointField()
 
+    SOURCE_CHOICES = _choices(['unknown', 'google'])
+    external_id = models.CharField(max_length=32, null=True, blank=True)
+    external_source = models.CharField(max_length=16, default='google')
+
     def __str__(self):
         return self.name
 
@@ -24,6 +28,8 @@ class BaseLocationModel(BaseModel):
                 raise NotImplementedError("Not setup to handle missing result")
             location = results[0]['geometry']['location']
             self.point = Point(location['lng'], location['lat'])
+            self.external_source = 'google'
+            self.external_id = results[0]['place_id']
         super().save(*args, **kwargs)
 
 
@@ -48,7 +54,6 @@ class Location(BaseLocationModel):
     def public_notices(self):
         notices = []
         for notice in self.notice_set.all():
-            print(dir(notice.photos.first()))
             notices.append({'src': notice.photos.first().src.url})
         return notices
 

@@ -11,19 +11,19 @@ class BaseLocationModel(BaseModel):
         abstract = True
 
     name = models.CharField(max_length=256)
-    latlon = models.PointField()
+    point = models.PointField()
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.latlon:
+        if not self.point:
             geocode, new = Geocode.objects.get_or_create(query='address=' + self.get_address())
             results = geocode.result.get('results', [])
             if not results:
                 raise NotImplementedError("Not setup to handle missing result")
             location = results[0]['geometry']['location']
-            self.latlon = Point(location['lng'], location['lat'])
+            self.point = Point(location['lng'], location['lat'])
         super().save(*args, **kwargs)
 
 

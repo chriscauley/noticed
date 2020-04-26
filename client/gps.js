@@ -98,7 +98,15 @@ class BaseNavLink extends React.Component {
   }
 }
 
+const required = Component => (
+  connect(props => {
+    const { gps } = props
+    return gps.source ? <Component {...props} /> : null
+  })
+)
+
 export default {
   NavLink: connect(BaseNavLink),
   connect,
+  required,
 }

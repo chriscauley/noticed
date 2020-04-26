@@ -11,7 +11,6 @@ class Photo(BaseModel):
 
     def save(self, *args, **kwargs):
         self.filename = self.filename or str(self.src).split('/')[-1]
-        self.name = self.name or self.filename.rsplit('.', 1)[0]
         super().save(*args, **kwargs)
 
     def __str__(self):

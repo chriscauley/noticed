@@ -21,4 +21,3 @@ class NoticeAdmin(admin.ModelAdmin):
 @admin.register(Geocode)
 class GeocodeAdmin(admin.ModelAdmin):
     pass
-

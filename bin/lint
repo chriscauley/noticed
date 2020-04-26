@@ -1,0 +1,11 @@
+#! /usr/bin/env bash
+
+set -e
+
+if [[ $1 == "--fix" ]];then
+    yarn lint --fix
+    yapf . -i -r
+else
+    yarn lint
+    yapf . -d -r
+fi

@@ -38,6 +38,8 @@ class City(BaseLocationModel):
 class Location(BaseLocationModel):
     city = models.ForeignKey("City", on_delete=models.CASCADE)
     zipcode = models.CharField(max_length=5)
+    def notice_count(self):
+        return self.notice_set.count()
 
     def get_address(self):
         return f"{self.name}, {self.city.get_address()}, {self.zipcode}"

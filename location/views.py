@@ -13,7 +13,7 @@ def location_list(request):
 
   locations = Location.objects.annotate(distance=Distance('point', user_point)).order_by('distance')
 
-  attrs = ['name', 'id']
+  attrs = ['name', 'id', 'notice_count']
   return JsonResponse({
     'locations': [l.to_json(attrs) for l in locations]
   })

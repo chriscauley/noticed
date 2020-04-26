@@ -26,7 +26,7 @@ def location_list(request):
 
 def location_detail(request, object_id):
     location = get_object_or_404(Location, id=object_id)
-    attrs = ['name', 'id', 'notice_count']
+    attrs = ['name', 'id', 'public_notices']
     data = location.to_json(attrs)
 
     return JsonResponse({'location': data})

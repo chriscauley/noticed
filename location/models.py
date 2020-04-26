@@ -45,6 +45,13 @@ class Location(BaseLocationModel):
     def get_address(self):
         return f"{self.name}, {self.city.get_address()}, {self.zipcode}"
 
+    def public_notices(self):
+        notices = []
+        for notice in self.notice_set.all():
+            print(dir(notice.photos.first()))
+            notices.append({'src': notice.photos.first().src.url})
+        return notices
+
 
 class Notice(BaseModel):
     class Meta:

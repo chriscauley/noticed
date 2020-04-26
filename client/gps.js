@@ -2,7 +2,7 @@ import React from 'react'
 import globalHook from 'use-global-hook'
 import css from '@unrest/css'
 
-const LS_KEY = '__location'
+const LS_KEY = '__geolocation'
 
 // copied from @unrest/react-auth/NavLink
 const dropdown = css.CSS({
@@ -14,16 +14,16 @@ const dropdown = css.CSS({
 
 const getInitialState = () => {
   try {
-    return { location: JSON.parse(localStorage.getItem(LS_KEY)) }
+    return { gps: JSON.parse(localStorage.getItem(LS_KEY)) }
   } catch (_) {
     return {}
   }
 }
 
 const actions = {
-  save: (store, location) => {
-    store.setState({ location })
-    localStorage.setItem(LS_KEY, JSON.stringify(location))
+  save: (store, gps) => {
+    store.setState({ gps })
+    localStorage.setItem(LS_KEY, JSON.stringify(gps))
   },
   useGPS: (store) => {
     const success = (position) => {
@@ -43,12 +43,12 @@ const actions = {
 const makeHook = globalHook(React, getInitialState(), actions)
 
 const connect = (Component) => {
-  return function LocationProvider(props) {
-    const [{ location }, actions] = makeHook()
+  return function GpsProvider(props) {
+    const [{ gps }, actions] = makeHook()
     const connectedProps = {
       ...props,
-      location: {
-        ...location,
+      gps: {
+        ...gps,
         actions,
       },
     }
@@ -66,12 +66,12 @@ class BaseNavLink extends React.Component {
   toggle = () => this.setState({ open: !this.state.open })
 
   render() {
-    const { location } = this.props
+    const { gps } = this.props
     return (
       <div className={dropdown.outer()}>
         <div className={dropdown.toggle()} onClick={this.toggle}>
           <i className="fa fa-map-marker mr-2" />
-          {location.source ? location.display : '???'}
+          {gps.source ? gps.display : '???'}
         </div>
         <div
           className={dropdown.shelf(this.state.open ? 'block' : 'hidden')}
@@ -79,7 +79,7 @@ class BaseNavLink extends React.Component {
         >
           <div
             className={dropdown.item()}
-            onClick={this._toggle(location.actions.useGPS)}
+            onClick={this._toggle(gps.actions.useGPS)}
           >
             Current Location
           </div>
@@ -88,7 +88,7 @@ class BaseNavLink extends React.Component {
           </div>
           <div
             className={dropdown.item()}
-            onClick={this._toggle(() => location.actions.save(null))}
+            onClick={this._toggle(() => gps.actions.save(null))}
           >
             Clear
           </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import auth from '@unrest/react-auth'
 import css from '@unrest/css'
+import location from '../location'
 
 const { AuthNavLink } = auth
 
@@ -13,7 +14,8 @@ export default function Nav() {
           Noticed
         </Link>
       </section>
-      <section className={css.nav.section()}>
+      <section className={css.nav.section('flex items-center')}>
+        <location.NavLink />
         <AuthNavLink />
       </section>
     </header>

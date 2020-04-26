@@ -6,6 +6,7 @@ import Home from './screens/Home'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import auth from '@unrest/react-auth'
+import location from './location'
 
 auth.config.login_redirect = '/images/'
 
@@ -18,6 +19,10 @@ const App = () => {
         <Nav />
         <div style={{ minHeight: 'calc(100vh - 230px)' }}>
           <Route exact path="/" component={Home} />
+          <Route
+            path="/location/:location_id/:slug/"
+            component={location.Detail}
+          />
           <AuthRoutes />
         </div>
       </BrowserRouter>

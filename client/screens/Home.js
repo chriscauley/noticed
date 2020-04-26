@@ -22,8 +22,12 @@ const LocationList = gps.required(
       <div className="p-4">
         <div className={css.h3()}>Select a location</div>
         <div className={css.list.outer()}>
-          {locations.map(({name, id, notice_count}) => (
-            <Link to={`/location/${id}/${slugify(name)}/`} key={id} className={css.list.action()}>
+          {locations.map(({ name, id, notice_count }) => (
+            <Link
+              to={`/location/${id}/${slugify(name)}/`}
+              key={id}
+              className={css.list.action()}
+            >
               <div>{name}</div>
               <div>{notice_count}</div>
             </Link>

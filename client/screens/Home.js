@@ -1,7 +1,7 @@
 import React from 'react'
 import css from '@unrest/css'
 import { Link } from 'react-router-dom'
-import {cloneDeep} from 'lodash'
+import slugify from 'slugify'
 
 import gps from '../gps/'
 import withLocations from '../location/withLocations'
@@ -12,9 +12,8 @@ css.list = css.CSS({
   action: 'list-group-item list-group-item-action',
 })
 
-
 const LocationList = gps.required(
-  withLocations(props => {
+  withLocations((props) => {
     const { loading, locations } = props.api
     if (loading && !locations) {
       return null
@@ -32,10 +31,10 @@ const LocationList = gps.required(
         </div>
       </div>
     )
-  })
+  }),
 )
 
-export default () => {
+export default function Home() {
   return (
     <div>
       <LocationList />

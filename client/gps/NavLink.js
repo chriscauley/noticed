@@ -20,7 +20,7 @@ class BaseNavLink extends React.Component {
           style={{ maxWidth: '12rem' }}
         >
           <i className="fa fa-map-marker mr-2" />
-          {gps.source ? gps.display : '???'}
+          <div className="hidden md-block">{gps.source ? gps.display : '???'}</div>
         </div>
         <div
           className={css.dropdown.shelf(this.state.open ? 'block' : 'hidden')}

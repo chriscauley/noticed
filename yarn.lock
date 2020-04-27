@@ -945,28 +945,30 @@
   version "0.0.1"
   resolved "https://codeload.github.com/chriscauley/unrest-css/tar.gz/f85bdab641d59acc7bde445b412243c173cea03b"
 
-"@unrest/react-auth@chriscauley/unrest-react-auth":
+"@unrest/css@chriscauley/unrest-css#9b801bf":
   version "0.0.1"
-  resolved "https://codeload.github.com/chriscauley/unrest-react-auth/tar.gz/d9c73dde9e6b2e9d40c45b3f6eff418f567627d4"
-  dependencies:
-    "@unrest/css" chriscauley/unrest-css
+  resolved "https://codeload.github.com/chriscauley/unrest-css/tar.gz/9b801bfc70849b799665878fd30eaa54ec10dc2e"
 
-"@unrest/react-jsonschema-form@chriscauley/unrest-react-jsonschema-form":
+"@unrest/react-auth@chriscauley/unrest-react-auth#6f7b744":
+  version "0.0.1"
+  resolved "https://codeload.github.com/chriscauley/unrest-react-auth/tar.gz/6f7b74431404b80ddad21b1877f1d1f684d14b2b"
+
+"@unrest/react-jsonschema-form@chriscauley/unrest-react-jsonschema-form#d5d5cd0":
   version "0.0.1"
   resolved "https://codeload.github.com/chriscauley/unrest-react-jsonschema-form/tar.gz/d5d5cd099a38eda0dc10895337cf34e4abc6d5c1"
   dependencies:
     "@unrest/css" chriscauley/unrest-css
 
-"@unrest/react-rest-hook@chriscauley/unrest-react-rest-hook":
+"@unrest/react-rest-hook@chriscauley/unrest-react-rest-hook#dc26015":
   version "1.0.0"
-  resolved "https://codeload.github.com/chriscauley/unrest-react-rest-hook/tar.gz/2d624383125e357416f84f721c6b7bec871418a7"
+  resolved "https://codeload.github.com/chriscauley/unrest-react-rest-hook/tar.gz/dc2601540efd71b3fb11519386add262682305e6"
   dependencies:
     lodash "^4.17.15"
     use-global-hook "^0.1.12"
 
-"@unrest/tailwind@chriscauley/unrest-tailwindcss":
+"@unrest/tailwind@chriscauley/unrest-tailwindcss#ea729b7":
   version "0.0.1"
-  resolved "https://codeload.github.com/chriscauley/unrest-tailwindcss/tar.gz/82394c3abd3fbeccca43d25908cef30e4aee80c1"
+  resolved "https://codeload.github.com/chriscauley/unrest-tailwindcss/tar.gz/ea729b768dea737d8612fd90b8156456968e46f1"
 
 abab@^2.0.0:
   version "2.0.3"

@@ -1,10 +1,10 @@
 import connect from './connect'
 import NavLink from './NavLink'
-import PlacePicker from './PlacePicker'
+import GeocodeModal from './GeocodeModal'
 
 export default {
   NavLink,
   connect,
   required: connect.required,
-  PlacePicker,
+  GeocodeModal,
 }

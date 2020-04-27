@@ -33,7 +33,7 @@ class BaseNavLink extends React.Component {
             Current Location
           </div>
           <a
-            href="#/location/search/"
+            href="#/gps/search/"
             className={css.dropdown.item()}
             onClick={this.toggle}
           >

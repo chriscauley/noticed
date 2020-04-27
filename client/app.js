@@ -19,7 +19,6 @@ const App = () => {
     <div className="container mx-auto">
       <BrowserRouter>
         <Nav />
-        <alert.TestAlert />
         <div style={{ minHeight: 'calc(100vh - 230px)' }}>
           <Route exact path="/" component={Home} />
           <Route
@@ -30,7 +29,7 @@ const App = () => {
         </div>
       </BrowserRouter>
       <HashRouter>
-        <Route path="/location/search/" component={gps.PlacePicker} />
+        <Route path={"/gps/search/"} component={gps.GeocodeModal} />
       </HashRouter>
       <Footer />
       <alert.List />

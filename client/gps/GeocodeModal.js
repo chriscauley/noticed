@@ -6,9 +6,9 @@ import RestHook from '@unrest/react-rest-hook'
 import connect from './connect'
 import Modal from '../components/Modal'
 
-const withPlaceSearch = RestHook('/api/placesearch/?query=${query || ""}')
+const withGeocode = RestHook('/api/geocode/?query=${query || ""}')
 
-export default class PlacePicker extends React.Component {
+export default class GeocodeModal extends React.Component {
   state = {}
   onSubmit = (formData) => this.setState(formData)
   render() {
@@ -24,14 +24,14 @@ export default class PlacePicker extends React.Component {
     return (
       <Modal>
         <Form schema={schema} onSubmit={this.onSubmit} />
-        <PlaceSearch query={this.state.query} />
+        <GeocodeResults query={this.state.query} />
       </Modal>
     )
   }
 }
 
-const PlaceSearch = connect(
-  withPlaceSearch((props) => {
+const GeocodeResults = connect(
+  withGeocode((props) => {
     const { results = [] } = props.api
     const selectLocation = ({
       formatted_address,

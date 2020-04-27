@@ -10,7 +10,7 @@ function testSupported(attribute) {
 
 const captureSupported = testSupported('capture')
 const base_icon =
-  'rounded-full text-white text-3xl m-2 cursor-pointer w-16 h-16 items-center justify-center'
+  'rounded-full text-white text-3xl m-2 cursor-pointer w-16 h-16 items-center justify-center flex'
 const icon = (i) => css.icon(i, base_icon)
 
 export default class UploadNotice extends React.Component {

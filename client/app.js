@@ -7,6 +7,7 @@ import Nav from './components/Nav'
 import Footer from './components/Footer'
 import auth from '@unrest/react-auth'
 import location from './location'
+import gps from './gps'
 
 auth.config.login_redirect = '/images/'
 
@@ -26,7 +27,9 @@ const App = () => {
           <AuthRoutes />
         </div>
       </BrowserRouter>
-      <HashRouter></HashRouter>
+      <HashRouter>
+        <Route path="/location/search/" component={gps.PlacePicker} />
+      </HashRouter>
       <Footer />
     </div>
   )

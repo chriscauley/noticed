@@ -6,12 +6,6 @@ import slugify from 'slugify'
 import gps from '../gps/'
 import withLocations from '../location/withLocations'
 
-css.list = css.CSS({
-  outer: 'list-group',
-  item: 'list-group-item',
-  action: 'list-group-item list-group-item-action',
-})
-
 const LocationList = gps.required(
   withLocations((props) => {
     const { loading, locations } = props.api

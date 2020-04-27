@@ -9,8 +9,16 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from unrest.decorators import login_required
 
-from location.models import Location, Notice
+from location.models import Location, Notice, Geocode
 from media.models import Photo
+
+
+def placesearch(request):
+    query = request.GET.get('query', None)
+    if not query:
+        return JsonResponse({})
+    geocode, new = Geocode.objects.get_or_create(query='address='+query)
+    return JsonResponse({'results': geocode.result['results']})
 
 
 def location_list(request):
@@ -19,6 +27,9 @@ def location_list(request):
     distance = D(m=request.GET.get('distance', 1000))
 
     locations = Location.objects.annotate(distance=Distance('point', user_point)).order_by('distance')
+    gc, new = Geocode.objects.get_or_create(query=f"latlng={lat},{lon}")
+    if new:
+        print("NEW!")
 
     attrs = ['name', 'id', 'notice_count']
     return JsonResponse({'locations': [l.to_json(attrs) for l in locations]})

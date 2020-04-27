@@ -9,21 +9,21 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from unrest.decorators import login_required
 
-from location.models import Location, Notice, Geocode, NearbySearch
+from location.models import Location, Notice, Geocode, NearbySearch, PlaceDetails
 from media.models import Photo
-
 
 MODELS = {
     'nearbysearch': NearbySearch,
     'geocode': Geocode,
 }
 
+
 def cached_google(request, model_name):
     model = MODELS[model_name]
     query = request.GET.get('query', None)
     if not query:
         return JsonResponse({})
-    obj, new = model.objects.get_or_create(query='address='+query)
+    obj, new = model.objects.get_or_create(query='address=' + query)
     return JsonResponse({'results': obj.result['results']})
 
 
@@ -34,12 +34,22 @@ def location_list(request):
 
     locations = Location.objects.annotate(distance=Distance('point', user_point)).order_by('distance')
     query = f"location={lat},{lon}&rankby=distance&type=establishment"
-    nearby, new = NearbySearch.objects.get_or_create(query=query)
+    nearbysearch, new = NearbySearch.objects.get_or_create(query=query)
     attrs = ['name', 'id', 'notice_count']
     return JsonResponse({
         'locations': [l.to_json(attrs) for l in locations],
-        'nearbysearch': nearby.result,
+        'nearbysearch': {
+            'id': nearbysearch.id,
+            'results': nearbysearch.result['results'],
+        }
     })
+
+
+@login_required
+def location_from_place_id(request):
+    data = json.loads(request.body.decode('utf-8') or "{}")
+    location = Location.from_place_id(data['place_id'])
+    return JsonResponse({'location': location.to_json(['id', 'name'])})
 
 
 def location_detail(request, object_id):

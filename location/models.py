@@ -59,6 +59,39 @@ class Location(BaseLocationModel):
             notices.append({'src': notice.photos.first().src.url})
         return notices
 
+    @staticmethod
+    def from_place_id(place_id):
+        placedetails, new = PlaceDetails.objects.get_or_create(query=f"place_id={place_id}")
+        location = Location.objects.filter(external_source="google", external_id=place_id).first()
+        if not location:
+            result = placedetails.result['result']
+            city_name = zipcode = country = None
+            for component in result['address_components']:
+                types = component['types']
+                if 'locality' in component['types']:
+                    city_name = component['short_name']
+                elif 'postal_code' in component['types']:
+                    zipcode = component['short_name']
+                elif 'country' in component['types']:
+                    country = component['short_name']
+            if not all([city_name, zipcode, country]):
+                raise NotImplementedError("Couldn't find city")
+            city, new = City.objects.get_or_create(
+                name=city_name,
+                country=country,
+            )
+            _location = result['geometry']['location']
+            location = Location.objects.create(
+                name=result['name'],
+                city=city,
+                zipcode=zipcode,
+                point=Point(_location['lng'], _location['lat']),
+                external_source="google",
+                external_id=place_id,
+            )
+            print("New location", location)
+        return location
+
 
 class Notice(BaseModel):
     class Meta:
@@ -88,11 +121,13 @@ class NoticePhoto(models.Model):
 class GoogleMapsCacheModel(models.Model):
     class Meta:
         abstract = True
+
     query = models.CharField(max_length=256)
     result = JSONField(null=True, blank=True)
+
     def get_result(self):
         url = f"{self.BASE_URL}?{self.query}&key={settings.GOOGLE_MAPS_API_KEY}"
-        print("Making google api request",url)
+        print("Making google api request", url)
         request = requests.get(url)
         request.raise_for_status()
         return request.json()
@@ -106,5 +141,10 @@ class GoogleMapsCacheModel(models.Model):
 class Geocode(GoogleMapsCacheModel):
     BASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
 
+
 class NearbySearch(GoogleMapsCacheModel):
     BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+
+
+class PlaceDetails(GoogleMapsCacheModel):
+    BASE_URL = "https://maps.googleapis.com/maps/api/place/details/json"

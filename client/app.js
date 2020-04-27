@@ -29,7 +29,7 @@ const App = () => {
         </div>
       </BrowserRouter>
       <HashRouter>
-        <Route path={"/gps/search/"} component={gps.GeocodeModal} />
+        <Route path={'/gps/search/'} component={gps.GeocodeModal} />
       </HashRouter>
       <Footer />
       <alert.List />

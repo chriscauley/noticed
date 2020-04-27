@@ -1,9 +1,11 @@
+import requests
+
+from django.conf import settings
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
 from django.contrib.postgres.fields import JSONField
 
 from unrest.models import BaseModel, _choices
-from location.utils import get_geocode
 
 
 class BaseLocationModel(BaseModel):
@@ -83,11 +85,26 @@ class NoticePhoto(models.Model):
     notice = models.ForeignKey('Notice', on_delete=models.CASCADE)
 
 
-class Geocode(models.Model):
+class GoogleMapsCacheModel(models.Model):
+    class Meta:
+        abstract = True
     query = models.CharField(max_length=256)
     result = JSONField(null=True, blank=True)
+    def get_result(self):
+        url = f"{self.BASE_URL}?{self.query}&key={settings.GOOGLE_MAPS_API_KEY}"
+        print("Making google api request",url)
+        request = requests.get(url)
+        request.raise_for_status()
+        return request.json()
 
     def save(self, *args, **kwargs):
         if not self.result:
-            self.result = get_geocode(self.query)
+            self.result = self.get_result()
         super().save(*args, **kwargs)
+
+
+class Geocode(GoogleMapsCacheModel):
+    BASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
+
+class NearbySearch(GoogleMapsCacheModel):
+    BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"

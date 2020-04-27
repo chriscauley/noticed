@@ -9,30 +9,37 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from unrest.decorators import login_required
 
-from location.models import Location, Notice, Geocode
+from location.models import Location, Notice, Geocode, NearbySearch
 from media.models import Photo
 
 
-def placesearch(request):
+MODELS = {
+    'nearbysearch': NearbySearch,
+    'geocode': Geocode,
+}
+
+def cached_google(request, model_name):
+    model = MODELS[model_name]
     query = request.GET.get('query', None)
     if not query:
         return JsonResponse({})
-    geocode, new = Geocode.objects.get_or_create(query='address='+query)
-    return JsonResponse({'results': geocode.result['results']})
+    obj, new = model.objects.get_or_create(query='address='+query)
+    return JsonResponse({'results': obj.result['results']})
 
 
 def location_list(request):
     lat, lon = request.GET['latlon'].split(',')
     user_point = Point(float(lon), float(lat), srid=4326)
-    distance = D(m=request.GET.get('distance', 1000))
+    distance = D(m=request.GET.get('distance', 100))
 
     locations = Location.objects.annotate(distance=Distance('point', user_point)).order_by('distance')
-    gc, new = Geocode.objects.get_or_create(query=f"latlng={lat},{lon}")
-    if new:
-        print("NEW!")
-
+    query = f"location={lat},{lon}&rankby=distance&type=establishment"
+    nearby, new = NearbySearch.objects.get_or_create(query=query)
     attrs = ['name', 'id', 'notice_count']
-    return JsonResponse({'locations': [l.to_json(attrs) for l in locations]})
+    return JsonResponse({
+        'locations': [l.to_json(attrs) for l in locations],
+        'nearbysearch': nearby.result,
+    })
 
 
 def location_detail(request, object_id):

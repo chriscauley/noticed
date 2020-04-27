@@ -14,13 +14,14 @@ class BaseNavLink extends React.Component {
     const { gps } = this.props
     return (
       <div className={css.dropdown.outer()}>
-        <div
-          className={css.dropdown.toggle('truncate')}
-          onClick={this.toggle}
-          style={{ maxWidth: '12rem' }}
-        >
+        <div className={css.dropdown.toggle('flex items-center')} onClick={this.toggle}>
           <i className="fa fa-map-marker mr-2" />
-          <div className="hidden md-block">{gps.source ? gps.display : '???'}</div>
+          <div
+            className="hidden md:inline-block truncate"
+            style={{ maxWidth: '12rem' }}
+          >
+            {gps.source ? gps.display : '???'}
+          </div>
         </div>
         <div
           className={css.dropdown.shelf(this.state.open ? 'block' : 'hidden')}

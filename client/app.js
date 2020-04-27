@@ -8,6 +8,7 @@ import Footer from './components/Footer'
 import auth from '@unrest/react-auth'
 import location from './location'
 import gps from './gps'
+import alert from './alert'
 
 auth.config.login_redirect = '/images/'
 
@@ -18,6 +19,7 @@ const App = () => {
     <div className="container mx-auto">
       <BrowserRouter>
         <Nav />
+        <alert.TestAlert />
         <div style={{ minHeight: 'calc(100vh - 230px)' }}>
           <Route exact path="/" component={Home} />
           <Route
@@ -31,6 +33,7 @@ const App = () => {
         <Route path="/location/search/" component={gps.PlacePicker} />
       </HashRouter>
       <Footer />
+      <alert.List />
     </div>
   )
 }

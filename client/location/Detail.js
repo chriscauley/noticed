@@ -19,7 +19,11 @@ const NoticePhoto = (props) => {
   return (
     <div className="m-2 relative">
       {owner && (
-        <DeleteButton action={deletePhoto} onDelete={onDelete} name="Notice" />
+        <DeleteButton
+          action={deletePhoto}
+          onDelete={onDelete}
+          name="Notice Photo"
+        />
       )}
       <img src={src} />
     </div>

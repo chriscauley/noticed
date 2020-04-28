@@ -7,6 +7,7 @@ from django.contrib.gis.measure import D
 from django.core.files.base import ContentFile
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from unrest.user.views import user_json
 from unrest.decorators import login_required
 
 from location.models import Location, Notice, Geocode, NearbySearch, PlaceDetails
@@ -35,7 +36,7 @@ def location_list(request):
     locations = Location.objects.annotate(distance=Distance('point', user_point)).order_by('distance')
     query = f"location={lat},{lon}&rankby=distance&type=establishment"
     nearbysearch, new = NearbySearch.objects.get_or_create(query=query)
-    attrs = ['name', 'id', 'notice_count']
+    attrs = ['name', 'id', 'public_notice_count']
     return JsonResponse({
         'locations': [l.to_json(attrs) for l in locations],
         'nearbysearch': {
@@ -59,6 +60,12 @@ def location_detail(request, object_id):
 
     return JsonResponse({'location': data})
 
+
+def add_photo_ids(user):
+    photos = Photo.objects.filter(user=user)
+    return {'photo_ids': list(photos.values_list('id', flat=True))}
+
+user_json.get_extra = add_photo_ids
 
 @login_required
 def upload_notice(request):

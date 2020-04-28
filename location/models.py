@@ -47,16 +47,26 @@ class Location(BaseLocationModel):
     city = models.ForeignKey("City", on_delete=models.CASCADE)
     zipcode = models.CharField(max_length=5)
 
-    def notice_count(self):
-        return self.notice_set.count()
-
     def get_address(self):
         return f"{self.name}, {self.city.get_address()}, {self.zipcode}"
 
+    def get_public_notices(self):
+        return self.notice_set.all()
+
+    @property
+    def public_notice_count(self):
+        return self.get_public_notices().count()
+
+    @property
     def public_notices(self):
         notices = []
-        for notice in self.notice_set.all():
-            notices.append({'src': notice.photos.first().src.url})
+        for notice in self.get_public_notices():
+            photo = notice.photos.first()
+            notices.append({
+                'src': photo.src.url,
+                'photo_id': photo.id,
+                'id': notice.id,
+            })
         return notices
 
     @staticmethod

@@ -14,9 +14,9 @@ export default class GeocodeModal extends React.Component {
   render() {
     const schema = {
       type: 'object',
-      title: 'Enter a zipcode, address, or latlng',
+      title: 'Enter a location to get started',
       properties: {
-        query: { type: 'string', title: '' },
+        query: { type: 'string', title: 'Zipcode or address' },
       },
       required: ['query'],
     }
@@ -33,13 +33,14 @@ export default class GeocodeModal extends React.Component {
 const GeocodeResults = connect(
   withGeocode((props) => {
     const { results = [] } = props.api
+    const { gps } = props
     const selectLocation = ({
       formatted_address,
       geometry,
       place_id,
     }) => () => {
       const { lat, lng } = geometry.location
-      props.gps.actions.save({
+      gps.actions.save({
         latitude: lat,
         longitude: lng,
         display: formatted_address,
@@ -49,7 +50,22 @@ const GeocodeResults = connect(
       window.location.hash = ''
     }
     if (!results.length) {
-      return null
+      return gps.supported ? (
+        <div>
+          <div className={css.h3()}>
+            Or we can look it up using your device.
+          </div>
+          {gps.error && (
+            <div className={css.alert.error()}>
+              There was an error reading your position. You may ty again below.
+            </div>
+          )}
+          <button onClick={gps.actions.useGPS} className={css.button()}>
+            <i className={css.icon('globe mr-2')} />
+            Use GPS
+          </button>
+        </div>
+      ) : null
     }
     return (
       <div className={css.list.outer()}>

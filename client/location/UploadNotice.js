@@ -45,8 +45,8 @@ class UploadNotice extends React.Component {
     this.setState({ loading: true })
     const { location_id, notice_id, onSuccess } = this.props
     const { src } = this.state
-    post('/api/location/noticephoto/', { src, location_id, notice_id })
-      .then(({error}) => {
+    post('/api/location/noticephoto/', { src, location_id, notice_id }).then(
+      ({ error }) => {
         if (error) {
           this.props.alert.error(error)
         } else {

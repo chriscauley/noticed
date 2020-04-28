@@ -18,6 +18,7 @@ const actions = {
   },
   useGPS: (store) => {
     const success = (position) => {
+      store.setState({ error: null })
       const { latitude, longitude } = position.coords
       store.actions.save({
         latitude,
@@ -26,7 +27,7 @@ const actions = {
         display: 'Current Location',
       })
     }
-    const error = (e) => console.error(e)
+    const error = (e) => store.setState({ error: e.message })
     navigator.geolocation.getCurrentPosition(success, error)
   },
 }
@@ -35,11 +36,13 @@ const makeHook = globalHook(React, getInitialState(), actions)
 
 const connect = (Component) => {
   return function GpsProvider(props) {
-    const [{ gps }, actions] = makeHook()
+    const [{ gps, error }, actions] = makeHook()
     const connectedProps = {
       ...props,
       gps: {
+        supported: !!navigator.geolocation,
         ...gps,
+        error,
         actions,
       },
     }
@@ -47,11 +50,5 @@ const connect = (Component) => {
     return <Component {...connectedProps} />
   }
 }
-
-connect.required = (Component) =>
-  connect((props) => {
-    const { gps } = props
-    return gps.source ? <Component {...props} /> : null
-  })
 
 export default connect

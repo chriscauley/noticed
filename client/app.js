@@ -19,7 +19,7 @@ const App = () => {
     <div className="container mx-auto">
       <BrowserRouter>
         <Nav />
-        <div style={{ minHeight: 'calc(100vh - 230px)' }}>
+        <div className="p-4" style={{ minHeight: 'calc(100vh - 230px)' }}>
           <Route exact path="/" component={Home} />
           <Route
             path="/location/:location_id/:slug/"

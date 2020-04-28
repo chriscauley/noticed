@@ -14,7 +14,10 @@ class BaseNavLink extends React.Component {
     const { gps } = this.props
     return (
       <div className={css.dropdown.outer()}>
-        <div className={css.dropdown.toggle('flex items-center')} onClick={this.toggle}>
+        <div
+          className={css.dropdown.toggle('flex items-center')}
+          onClick={this.toggle}
+        >
           <i className="fa fa-map-marker mr-2" />
           <div
             className="hidden md:inline-block truncate"

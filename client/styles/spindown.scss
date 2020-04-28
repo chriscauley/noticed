@@ -1,0 +1,12 @@
+.ur-spindown circle {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: 1s stroke-dashoffset;
+  stroke-dasharray: 314%;
+  animation: spindown linear;
+}
+
+@keyframes spindown {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 314%; }
+}

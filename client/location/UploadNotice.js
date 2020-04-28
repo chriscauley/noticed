@@ -2,6 +2,8 @@ import React from 'react'
 import { post } from '@unrest/react-jsonschema-form'
 import css from '@unrest/css'
 
+import alert from '../alert'
+
 function testSupported(attribute) {
   const i = document.createElement('input')
   i.setAttribute(attribute, true)
@@ -13,7 +15,7 @@ const base_icon =
   'rounded-full text-white text-3xl m-2 cursor-pointer w-16 h-16 items-center justify-center flex'
 const icon = (i) => css.icon(i, base_icon)
 
-export default class UploadNotice extends React.Component {
+class UploadNotice extends React.Component {
   state = {}
   constructor(props) {
     super(props)
@@ -43,10 +45,14 @@ export default class UploadNotice extends React.Component {
     this.setState({ loading: true })
     const { location_id, notice_id, onSuccess } = this.props
     const { src } = this.state
-    post('/api/location/noticephoto/', { src, location_id, notice_id }).then(
-      () => {
-        this.setState({ src: null })
-        onSuccess()
+    post('/api/location/noticephoto/', { src, location_id, notice_id })
+      .then(({error}) => {
+        if (error) {
+          this.props.alert.error(error)
+        } else {
+          this.setState({ src: null })
+          onSuccess()
+        }
       },
     )
   }
@@ -103,3 +109,5 @@ export default class UploadNotice extends React.Component {
     )
   }
 }
+
+export default alert.connect(UploadNotice)

@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import path, re_path, include
 
-from location.views import location_list, location_detail, upload_notice, cached_google, location_from_place_id
+from location.views import location_list, location_detail, upload_notice, cached_google, location_from_place_id, delete_photo
 from unrest import views as unrest_views
 
 urlpatterns = [
@@ -12,6 +12,7 @@ urlpatterns = [
     path('api/location/location/<int:object_id>/', location_detail),
     path('api/location/noticephoto/', upload_notice),
     path('api/location/from_place_id/', location_from_place_id),
+    path('api/media/photo/delete/', delete_photo),
     re_path('api/(nearbysearch|geocode)/', cached_google),
     re_path('^(?:login|logout|signup|new|location)/', unrest_views.index),
     re_path('^$', unrest_views.index),

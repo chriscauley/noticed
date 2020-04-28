@@ -51,7 +51,7 @@ class Location(BaseLocationModel):
         return f"{self.name}, {self.city.get_address()}, {self.zipcode}"
 
     def get_public_notices(self):
-        return self.notice_set.all()
+        return self.notice_set.filter(noticephoto__isnull=False)
 
     @property
     def public_notice_count(self):

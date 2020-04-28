@@ -65,7 +65,9 @@ def add_photo_ids(user):
     photos = Photo.objects.filter(user=user)
     return {'photo_ids': list(photos.values_list('id', flat=True))}
 
+
 user_json.get_extra = add_photo_ids
+
 
 @login_required
 def upload_notice(request):
@@ -87,4 +89,12 @@ def upload_notice(request):
     notice.photos.add(photo)
     notice.save()
 
+    return JsonResponse({})
+
+
+@login_required
+def delete_photo(request):
+    data = json.loads(request.body.decode('utf-8') or "{}")
+    photo = get_object_or_404(Photo, id=data.get('photo_id'), user=request.user)
+    photo.delete()
     return JsonResponse({})

@@ -97,4 +97,7 @@ def delete_photo(request):
     data = json.loads(request.body.decode('utf-8') or "{}")
     photo = get_object_or_404(Photo, id=data.get('photo_id'), user=request.user)
     photo.delete()
+
+    # Remove notices that don't have photos associated with them any more
+    Notice.objects.filter(noticephoto__isnull=True).delete()
     return JsonResponse({})

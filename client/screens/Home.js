@@ -49,14 +49,14 @@ const LocationList = gps.required(
       <div className="p-4">
         <div className={css.h3()}>Select a location</div>
         <div className={css.list.outer()}>
-          {locations.map(({ name, id, public_notice_count }) => (
+          {locations.map(({ name, id, public_photo_count }) => (
             <Link
               to={locationUrl({ id, name })}
               key={id}
               className={css.list.action()}
             >
               <div>{name}</div>
-              <div>{public_notice_count}</div>
+              <div>{public_photo_count}</div>
             </Link>
           ))}
         </div>

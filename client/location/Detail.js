@@ -12,18 +12,14 @@ const withLocation = RestHook(
 )
 
 const NoticePhoto = (props) => {
-  const { owner, src, photo_id, onDelete } = props
+  const { owner, src, id, onDelete } = props
   const deletePhoto = () => {
-    return post('/api/media/photo/delete/', { photo_id })
+    return post('/api/media/photo/delete/', { id })
   }
   return (
     <div className="m-2 relative">
       {owner && (
-        <DeleteButton
-          action={deletePhoto}
-          onDelete={onDelete}
-          name="Notice Photo"
-        />
+        <DeleteButton action={deletePhoto} onDelete={onDelete} name="Photo" />
       )}
       <img src={src} />
     </div>
@@ -33,25 +29,25 @@ const NoticePhoto = (props) => {
 export default auth.withAuth(
   withLocation((props) => {
     const { loading, location, refetch } = props.api
+    if (loading && !location) {
+      return null
+    }
     const user_photo_ids = props.auth.user ? props.auth.user.photo_ids : []
     const refreshAll = () => {
       props.auth.refetch()
       refetch(props)
     }
-    if (loading && !location) {
-      return null
-    }
     return (
       <div>
         <h2 className={css.h2()}>{location.name}</h2>
-        <div>This place has {location.public_notices.length} notices.</div>
-        {location.public_notices.map((notice) => (
+        <div>This place has {location.public_photos.length} notices.</div>
+        {location.public_photos.map((photo) => (
           <NoticePhoto
-            {...notice}
-            key={notice.id}
+            {...photo}
+            key={photo.id}
             auth={props.auth}
             onDelete={refreshAll}
-            owner={user_photo_ids.includes(notice.photo_id)}
+            owner={user_photo_ids.includes(photo.id)}
           />
         ))}
         <UploadNotice

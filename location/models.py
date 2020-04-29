@@ -50,24 +50,22 @@ class Location(BaseLocationModel):
     def get_address(self):
         return f"{self.name}, {self.city.get_address()}, {self.zipcode}"
 
-    def get_public_notices(self):
-        return self.notice_set.filter(noticephoto__isnull=False)
+    def get_public_photos(self):
+        return self.photo_set.all()
 
     @property
-    def public_notice_count(self):
-        return self.get_public_notices().count()
+    def public_photo_count(self):
+        return self.get_public_photos().count()
 
     @property
-    def public_notices(self):
-        notices = []
-        for notice in self.get_public_notices():
-            photo = notice.photos.first()
-            notices.append({
+    def public_photos(self):
+        photos = []
+        for photo in self.get_public_photos():
+            photos.append({
                 'src': photo.src.url,
-                'photo_id': photo.id,
-                'id': notice.id,
+                'id': photo.id,
             })
-        return notices
+        return photos
 
     @staticmethod
     def from_place_id(place_id):
@@ -107,25 +105,17 @@ class Notice(BaseModel):
     class Meta:
         ordering = ('order', )
 
-    photos = models.ManyToManyField('media.Photo', through='NoticePhoto')
     location = models.ForeignKey('Location', on_delete=models.CASCADE)
     order = models.IntegerField()
+
+    @property
+    def photo(self):
+        return self.photo_set.all().first()
 
     def save(self, *args, **kwargs):
         if not self.order:
             self.order = Notice.objects.filter(location=self.location).count() + 1
         super().save(*args, **kwargs)
-
-
-class NoticePhoto(models.Model):
-    class Meta:
-        ordering = ('-created', )
-
-    created = models.DateTimeField(auto_now_add=True)
-    STATUS_CHOICES = _choices(['new', 'accepted', 'rejected'])
-    status = models.CharField(max_length=32, choices=STATUS_CHOICES, default="new")
-    photo = models.ForeignKey('media.Photo', on_delete=models.CASCADE)
-    notice = models.ForeignKey('Notice', on_delete=models.CASCADE)
 
 
 class GoogleMapsCacheModel(models.Model):

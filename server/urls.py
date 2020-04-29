@@ -14,7 +14,7 @@ urlpatterns = [
     path('api/location/from_place_id/', location_from_place_id),
     path('api/media/photo/delete/', delete_photo),
     re_path('api/(nearbysearch|geocode)/', cached_google),
-    re_path('^(?:login|logout|signup|reset-password|new|location|gps)/', unrest_views.index),
+    re_path('^(?:login|logout|signup|reset-password|new|location|gps|photo)/', unrest_views.index),
     re_path('^$', unrest_views.index),
     re_path('', include('unrest.user.urls')),
 ]

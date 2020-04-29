@@ -36,7 +36,7 @@ def location_list(request):
     locations = Location.objects.annotate(distance=Distance('point', user_point)).order_by('distance')
     query = f"location={lat},{lon}&rankby=distance&type=establishment"
     nearbysearch, new = NearbySearch.objects.get_or_create(query=query)
-    attrs = ['name', 'id', 'public_notice_count']
+    attrs = ['name', 'id', 'public_photo_count']
     return JsonResponse({
         'locations': [l.to_json(attrs) for l in locations],
         'nearbysearch': {
@@ -54,15 +54,24 @@ def location_from_place_id(request):
 
 def location_detail(request, object_id):
     location = get_object_or_404(Location, id=object_id)
-    attrs = ['name', 'id', 'public_notices']
+    attrs = ['name', 'id', 'public_photos']
     data = location.to_json(attrs)
 
     return JsonResponse({'location': data})
 
 
 def add_photo_ids(user):
-    photos = Photo.objects.filter(user=user)
-    return {'photo_ids': list(photos.values_list('id', flat=True))}
+    photos = Photo.objects.filter(user=user).prefetch_related('location')
+    photos = [p.to_json(['id', 'src', 'location_id']) for p in photos]
+    photo_ids = [p['id'] for p in photos]
+
+    location_ids = [p['location_id'] for p in photos if p['location_id']]
+    locations = Location.objects.filter(id__in=location_ids)
+    return {
+        'photos': photos,
+        'photo_ids': photo_ids,
+        'locations': [l.to_json(['id', 'name']) for l in locations]
+    }
 
 
 user_json.get_extra = add_photo_ids
@@ -72,21 +81,14 @@ user_json.get_extra = add_photo_ids
 def upload_notice(request):
     data = json.loads(request.body.decode('utf-8') or "{}")
     location = get_object_or_404(Location, id=data.get('location_id'))
-    if data.get('notice_id'):
-        notice = get_object_or_404(notice, id=data.get('notice_id'), location=location)
-    else:
-        notice = Notice.objects.create(location=location)
 
     # A lot of this is reused from gif-party/party/views.py
     # Abstract it out?
     uri = DataURI(data.pop('src'))
     f = ContentFile(uri.data, name=uri.name)
-    photo = Photo(user=request.user)
+    photo = Photo(user=request.user, location=location)
     photo.src.save(f.name, f)
     photo.save()
-
-    notice.photos.add(photo)
-    notice.save()
 
     return JsonResponse({})
 
@@ -94,9 +96,6 @@ def upload_notice(request):
 @login_required
 def delete_photo(request):
     data = json.loads(request.body.decode('utf-8') or "{}")
-    photo = get_object_or_404(Photo, id=data.get('photo_id'), user=request.user)
+    photo = get_object_or_404(Photo, id=data.get('id'), user=request.user)
     photo.delete()
-
-    # Remove notices that don't have photos associated with them any more
-    Notice.objects.filter(noticephoto__isnull=True).delete()
     return JsonResponse({})

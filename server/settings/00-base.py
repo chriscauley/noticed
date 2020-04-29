@@ -4,6 +4,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'c5+)^6f*es++c&2jf(!2l*sdad*(p1k7bci6ctk*#*bv_sr8+h'
 DEBUG = True
+SITE_ID = 1
 
 ALLOWED_HOSTS = []
 
@@ -87,3 +88,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '../.media')
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
+
+EMAIL_HOST = 'smtp.sparkpostmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'SMTP_Injection'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'noreply@unrest.io'

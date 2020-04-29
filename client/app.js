@@ -9,6 +9,8 @@ import auth from '@unrest/react-auth'
 import location from './location'
 import gps from './gps'
 import alert from './alert'
+import MyPhotos from './photo/MyPhotos'
+import photo from './photo'
 
 auth.config.login_redirect = '/images/'
 
@@ -26,6 +28,7 @@ const App = () => {
             component={location.Detail}
           />
           <Route path={'/gps/map/'} component={gps.Map} />
+          <Route path={'/photo/'} component={MyPhotos} />
           <AuthRoutes />
         </div>
       </BrowserRouter>
@@ -34,6 +37,7 @@ const App = () => {
       </HashRouter>
       <Footer />
       <alert.List />
+      <photo.BulkUpload />
     </div>
   )
 }

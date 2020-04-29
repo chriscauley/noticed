@@ -42,12 +42,9 @@ class BaseDeleteButton extends React.Component {
             </div>
           </div>
         )}
-        <button
-          className={css.button.danger('absolute top-0 right-0 m-4')}
-          onClick={this.toggle}
-        >
+        <a className={css.button.danger()} onClick={this.toggle}>
           <i className="fa fa-trash" />
-        </button>
+        </a>
       </>
     )
   }

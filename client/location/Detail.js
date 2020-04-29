@@ -2,29 +2,13 @@ import React from 'react'
 import css from '@unrest/css'
 import auth from '@unrest/react-auth'
 import RestHook from '@unrest/react-rest-hook'
-import { post } from '@unrest/react-jsonschema-form'
 
 import UploadNotice from './UploadNotice'
-import DeleteButton from '../DeleteButton'
+import PhotoCard from '../photo/PhotoCard'
 
 const withLocation = RestHook(
   '/api/location/location/${match.params.location_id}/',
 )
-
-const NoticePhoto = (props) => {
-  const { owner, src, id, onDelete } = props
-  const deletePhoto = () => {
-    return post('/api/media/photo/delete/', { id })
-  }
-  return (
-    <div className="m-2 relative">
-      {owner && (
-        <DeleteButton action={deletePhoto} onDelete={onDelete} name="Photo" />
-      )}
-      <img src={src} />
-    </div>
-  )
-}
 
 export default auth.withAuth(
   withLocation((props) => {
@@ -32,7 +16,6 @@ export default auth.withAuth(
     if (loading && !location) {
       return null
     }
-    const user_photo_ids = props.auth.user ? props.auth.user.photo_ids : []
     const refreshAll = () => {
       props.auth.refetch()
       refetch(props)
@@ -41,15 +24,13 @@ export default auth.withAuth(
       <div>
         <h2 className={css.h2()}>{location.name}</h2>
         <div>This place has {location.public_photos.length} notices.</div>
-        {location.public_photos.map((photo) => (
-          <NoticePhoto
-            {...photo}
-            key={photo.id}
-            auth={props.auth}
-            onDelete={refreshAll}
-            owner={user_photo_ids.includes(photo.id)}
-          />
-        ))}
+        <div className="flex flex-wrap">
+          {location.public_photos.map((photo) => (
+            <div key={photo.id} className="p-2 w-full md:w-1/2">
+              <PhotoCard {...photo} onDelete={refreshAll} />
+            </div>
+          ))}
+        </div>
         <UploadNotice
           location_id={location.id}
           onSuccess={() => {

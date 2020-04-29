@@ -80,13 +80,14 @@ user_json.get_extra = add_photo_ids
 @login_required
 def upload_notice(request):
     data = json.loads(request.body.decode('utf-8') or "{}")
-    location = get_object_or_404(Location, id=data.get('location_id'))
 
     # A lot of this is reused from gif-party/party/views.py
     # Abstract it out?
     uri = DataURI(data.pop('src'))
     f = ContentFile(uri.data, name=uri.name)
-    photo = Photo(user=request.user, location=location)
+    photo = Photo(user=request.user)
+    if data.get('location_id'):
+        photo.location = get_object_or_404(Location, id=data['location_id'])
     photo.src.save(f.name, f)
     photo.save()
 

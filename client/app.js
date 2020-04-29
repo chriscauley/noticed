@@ -25,6 +25,7 @@ const App = () => {
             path="/location/:location_id/:slug/"
             component={location.Detail}
           />
+          <Route path={'/gps/map/'} component={gps.Map} />
           <AuthRoutes />
         </div>
       </BrowserRouter>

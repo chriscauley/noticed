@@ -952,6 +952,8 @@
 "@unrest/react-auth@chriscauley/unrest-react-auth#6f7b744":
   version "0.0.1"
   resolved "https://codeload.github.com/chriscauley/unrest-react-auth/tar.gz/6f7b74431404b80ddad21b1877f1d1f684d14b2b"
+  dependencies:
+    "@unrest/css" chriscauley/unrest-css
 
 "@unrest/react-jsonschema-form@chriscauley/unrest-react-jsonschema-form#d5d5cd0":
   version "0.0.1"
@@ -2037,6 +2039,11 @@ data-urls@^1.1.0:
     abab "^2.0.0"
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
+
+date-fns@^2.12.0:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.12.0.tgz#01754c8a2f3368fc1119cf4625c3dad8c1845ee6"
+  integrity sha512-qJgn99xxKnFgB1qL4jpxU7Q2t0LOn1p8KMIveef3UZD7kqjT3tpFNNdXJelEHhE+rUgffriXriw/sOSU+cS1Hw==
 
 deasync@^0.1.14:
   version "0.1.19"

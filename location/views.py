@@ -46,7 +46,6 @@ def location_list(request):
     })
 
 
-@login_required
 def location_from_place_id(request):
     data = json.loads(request.body.decode('utf-8') or "{}")
     location = Location.from_place_id(data['place_id'])

@@ -22,6 +22,7 @@
     "@unrest/react-rest-hook": "chriscauley/unrest-react-rest-hook#dc26015",
     "@unrest/tailwind": "chriscauley/unrest-tailwindcss#ea729b7",
     "classnames": "^2.2.6",
+    "date-fns": "^2.12.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
     "parcel": "^1.12.4",

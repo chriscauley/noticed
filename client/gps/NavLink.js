@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 import connect from './connect'
 
@@ -19,11 +20,9 @@ class BaseNavLink extends React.Component {
           onClick={this.toggle}
         >
           <i className="fa fa-map-marker mr-2" />
-          <div
-            className="hidden md:inline-block truncate"
-            style={{ maxWidth: '12rem' }}
-          >
-            {gps.source ? gps.display : '???'}
+          <div className="max-w-10 md:max-w-16 truncate">
+            {gps.source ? gps.display : '?'}
+            {gps.loading || ''}
           </div>
         </div>
         <div
@@ -43,12 +42,24 @@ class BaseNavLink extends React.Component {
           >
             Search
           </a>
-          <div
-            className={css.dropdown.item()}
-            onClick={this._toggle(() => gps.actions.save(null))}
-          >
-            Clear
-          </div>
+          {gps.source && (
+            <>
+              <div className="border-b border-t mt-1 pb-1" />
+              <Link
+                to="/gps/map/"
+                className={css.dropdown.item()}
+                onClick={this.toggle}
+              >
+                View Info
+              </Link>
+              <div
+                className={css.dropdown.item()}
+                onClick={this._toggle(() => gps.actions.save(null))}
+              >
+                Clear
+              </div>
+            </>
+          )}
         </div>
       </div>
     )

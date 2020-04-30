@@ -2,7 +2,6 @@ import React from 'react'
 import auth from '@unrest/react-auth'
 import css from '@unrest/css'
 import PhotoCard from './PhotoCard'
-import { sortBy } from 'lodash'
 
 class MyPhotos extends React.Component {
   render() {
@@ -10,31 +9,44 @@ class MyPhotos extends React.Component {
     if (!user || loading) {
       return null
     }
-    const photos = user.photos.map((photo) => ({
-      ...photo,
-      location: user.locations.find((l) => l.id === photo.location_id),
-    }))
+    const location_photos = {}
+    const location_map = {}
+    user.photos
+      .map((photo) => ({
+        ...photo,
+        location: user.locations.find((l) => l.id === photo.location_id),
+      }))
+      .forEach((photo) => {
+        const _id = photo.location ? photo.location.id : 0
+        location_photos[_id] = location_photos[_id] || []
+        location_photos[_id].push(photo)
+        location_map[_id] = photo.location
+      })
+
+    const locations = Object.keys(location_map)
+      .sort()
+      .map((location_id) => {
+        return {
+          ...location_map[location_id],
+          photos: location_photos[location_id],
+        }
+      })
 
     return (
       <div>
         <div className={css.h1()}>Your Photos</div>
-        <div className="flex flex-wrap">
-          {sortBy(photos, (p) => p.location)
-            .reverse()
-            .map((photo) => (
-              <div key={photo.id} className="p-2 w-full md:w-1/2">
-                <PhotoCard {...photo} onDelete={refetch}>
-                  <a
-                    href={`#/photo/${photo.id}/locate/`}
-                    className={css.button()}
-                  >
-                    <i className={css.icon('edit mr-2')} />
-                    {photo.location ? photo.location.name : 'has not location'}
-                  </a>
-                </PhotoCard>
-              </div>
-            ))}
-        </div>
+        {locations.map((location) => (
+          <div key={location.id}>
+            <div className={css.h2()}>
+              {location.name || 'Photos without a location'}
+            </div>
+            <div style={{ columns: 2 }}>
+              {location.photos.map((photo) => (
+                <PhotoCard {...photo} onDelete={refetch} key={photo.id} />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     )
   }

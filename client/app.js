@@ -66,6 +66,7 @@ const App = () => {
           <Route path={'/photo/'} component={MyPhotos} />
           <AuthRoutes />
         </div>
+        <photo.BulkUpload />
       </BrowserRouter>
       <HashRouter>
         <Route path={'/gps/search/'} component={gps.GeocodeModal} />
@@ -77,7 +78,6 @@ const App = () => {
       </HashRouter>
       <Footer />
       <alert.List />
-      <photo.BulkUpload />
     </div>
   )
 }

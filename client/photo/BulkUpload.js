@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { post } from '@unrest/react-jsonschema-form'
 import auth from '@unrest/react-auth'
 import css from '@unrest/css'
@@ -43,19 +44,28 @@ const _onChange = (props) => ({ target }) => {
 
 const Button = auth.withAuth(
   alert.connect((props) => {
+    const user = props.auth.user
+    const _btn =
+      'cursor-pointer w-16 h-16 flex items-center justify-center bg-blue-500 text-white rounded-full'
     const onChange = _onChange(props)
     return (
       <div className="fixed bottom-0 right-0 m-4 text-2xl z-10">
-        <label className={css.button()}>
-          <i className={css.icon('file-photo-o')} />
-          <input
-            className="hidden"
-            type="file"
-            accept="image/*"
-            onChange={onChange}
-            multiple
-          />
-        </label>
+        {user ? (
+          <label className={_btn}>
+            <i className={css.icon('file-photo-o')} />
+            <input
+              className="hidden"
+              type="file"
+              accept="image/*"
+              onChange={onChange}
+              multiple
+            />
+          </label>
+        ) : (
+          <Link to={auth.config.login.url} className={_btn}>
+            <i className={css.icon('file-photo-o')} />
+          </Link>
+        )}
       </div>
     )
   }),

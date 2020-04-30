@@ -6,10 +6,13 @@ import auth from '@unrest/react-auth'
 import Form, { post } from '@unrest/react-jsonschema-form'
 import RestHook from '@unrest/react-rest-hook'
 import alert from '../alert'
+import gps from '../gps'
 
 import Modal from '../components/Modal'
 
-const withAutocomplete = RestHook('/api/autocomplete/?query=${query}')
+const withAutocomplete = RestHook(
+  '/api/autocomplete/?query=${query}&location=${gps.latlon}',
+)
 
 const RecentLocations = auth.withAuth((props) => {
   const { loading, user } = props.auth
@@ -81,7 +84,7 @@ class AutocompleteModal extends React.Component {
 export default auth.withAuth(withRouter(alert.connect(AutocompleteModal)))
 let last_predictions = []
 
-const AutocompleteResults = alert.connect(
+const AutocompleteResults = gps.connect(
   withAutocomplete((props) => {
     const { loading, predictions = last_predictions } = props.api
     if (loading && !predictions.length) {

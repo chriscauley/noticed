@@ -25,7 +25,10 @@ def cached_google(request, model_name):
     query = request.GET.get('query', None)
     if not query:
         return JsonResponse({})
-    obj, new = model.objects.get_or_create(query=model.query_param + '=' + query)
+    query_string = model.query_param + '=' + query
+    if request.GET.get('location'):
+        query_string += '&location=' + request.GET['location']
+    obj, new = model.objects.get_or_create(query=query_string)
     return JsonResponse(obj.result)
 
 

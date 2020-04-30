@@ -31,6 +31,7 @@ const actions = {
       store.actions.save({
         latitude,
         longitude,
+        latlon: `${latitude},${longitude}`,
         source: 'gps',
         display: 'GPS',
       })

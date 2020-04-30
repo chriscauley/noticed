@@ -40,9 +40,11 @@ const actions = {
     }
     const error = (e) => store.setState({ error: e.message })
     navigator.geolocation.getCurrentPosition(success, error)
+    clearTimeout(_timeout)
     _timeout = setTimeout(store.actions.autoUpdate, 10000)
   },
   autoUpdate: (store) => {
+    clearTimeout(_timeout)
     const { gps } = store.state
     if (gps && gps.source === 'gps') {
       store.actions.useGPS()
@@ -55,8 +57,10 @@ const makeHook = globalHook(React, getInitialState(), actions)
 const connect = (Component) => {
   return function GpsProvider(props) {
     const [{ gps, error, checked, updated, count = 0 }, actions] = makeHook()
-    clearTimeout(_timeout)
-    _timeout = setTimeout(actions.autoUpdate, 1000)
+    if (!_timeout) {
+      // sets it the first time
+      _timeout = setTimeout(actions.autoUpdate, 1000)
+    }
     const connectedProps = {
       ...props,
       gps: {

@@ -9,10 +9,13 @@ import * as gs from 'react-static-google-map'
 
 const locationUrl = (l) => `/location/${l.id}/${slugify(l.name)}/`
 
+let last_locations
+
 const LocationList = gps.required(
   withLocations((props) => {
     const { loading, locations } = props.api
-    if (loading && !locations) {
+    last_locations = locations || last_locations
+    if (loading && !last_locations) {
       return null
     }
     const { gps } = props
@@ -22,7 +25,7 @@ const LocationList = gps.required(
           size="400x400"
           apiKey="AIzaSyAQDgeeUI0TbWvr5yi8CtBfSF2YjJb8jRs"
         >
-          {locations.map(({ id, latitude, longitude }) => (
+          {last_locations.map(({ id, latitude, longitude }) => (
             <gs.Marker key={id} location={`${latitude},${longitude}`} />
           ))}
           <gs.Marker
@@ -33,7 +36,7 @@ const LocationList = gps.required(
         </gs.StaticGoogleMap>
         <div className={css.h3()}>Select a location</div>
         <div className={css.list.outer()}>
-          {locations.map(({ name, id, public_photo_count }) => (
+          {last_locations.map(({ name, id, public_photo_count }) => (
             <Link
               to={locationUrl({ id, name })}
               key={id}

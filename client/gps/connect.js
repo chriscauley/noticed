@@ -15,6 +15,9 @@ let _timeout
 
 const actions = {
   save: (store, gps) => {
+    if (gps && gps.source) {
+      gps.latlon = `${gps.latitude},${gps.longitude}`
+    }
     const count = (store.state.count || 0) + 1
     store.setState({ gps, updated: new Date(), count })
     localStorage.setItem(LS_KEY, JSON.stringify(gps))
@@ -31,7 +34,6 @@ const actions = {
       store.actions.save({
         latitude,
         longitude,
-        latlon: `${latitude},${longitude}`,
         source: 'gps',
         display: 'GPS',
       })

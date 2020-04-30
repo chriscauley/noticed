@@ -18,7 +18,7 @@ class MyPhotos extends React.Component {
             <div className={css.h2()}>
               {location.name || 'Photos without a location'}
             </div>
-            <div style={{ columns: 2 }}>
+            <div className="flex flex-wrap -mx-2">
               {location.photos.map((photo) => (
                 <PhotoCard {...photo} onDelete={refetch} key={photo.id} />
               ))}

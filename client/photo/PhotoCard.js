@@ -13,24 +13,30 @@ const PhotoCard = (props) => {
   const owner = isOwner(id, auth.user)
   const deletePhoto = () => post('/api/media/photo/delete/', { id })
   return (
-    <div className="relative mb-4">
-      <div className="absolute top-0 right-0 m-4">
-        <ZoomButton src={src} />
-        {owner && (
-          <DeleteButton action={deletePhoto} onDelete={onDelete} name="Photo" />
-        )}
-      </div>
-      <img src={src} />
-      <div className="absolute bottom-0 right-0 m-4">
-        {owner && (
-          <a
-            href={`#/photo/${id}/locate/`}
-            className={css.button[location ? 'primary' : 'warning']()}
-          >
-            <i className={css.icon('edit mr-2')} />
-            {location ? location.name : 'needs location'}
-          </a>
-        )}
+    <div className="px-2 mb-4 w-full sm:w-1/2">
+      <div className="relative">
+        <div className="absolute top-0 right-0 m-4">
+          <ZoomButton src={src} />
+          {owner && (
+            <DeleteButton
+              action={deletePhoto}
+              onDelete={onDelete}
+              name="Photo"
+            />
+          )}
+        </div>
+        <img src={src} />
+        <div className="absolute bottom-0 right-0 m-4">
+          {owner && (
+            <a
+              href={`#/photo/${id}/locate/`}
+              className={css.button[location ? 'primary' : 'warning']()}
+            >
+              <i className={css.icon('edit mr-2')} />
+              {location ? location.name : 'needs location'}
+            </a>
+          )}
+        </div>
       </div>
     </div>
   )

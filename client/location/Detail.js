@@ -25,16 +25,22 @@ export default auth.withAuth(
       <div>
         <h2 className={css.h2()}>{location.name}</h2>
         <div>This place has {location.public_photos.length} notices.</div>
-        <div style={{ columns: 2 }}>
-          <gs.StaticGoogleMap
-            className="mb-4"
-            size="400x400"
-            apiKey="AIzaSyAQDgeeUI0TbWvr5yi8CtBfSF2YjJb8jRs"
-          >
-            <gs.Marker location={`${latitude},${longitude}`} color="blue" />
-          </gs.StaticGoogleMap>
+        <div className="flex flex-wrap -mx-2">
+          <div className="relative px-2 mb-4 w-full sm:w-1/2">
+            <gs.StaticGoogleMap
+              size="400x400"
+              apiKey="AIzaSyAQDgeeUI0TbWvr5yi8CtBfSF2YjJb8jRs"
+            >
+              <gs.Marker location={`${latitude},${longitude}`} />
+            </gs.StaticGoogleMap>
+          </div>
           {location.public_photos.map((photo) => (
-            <PhotoCard {...photo} onDelete={refreshAll} key={photo.id} />
+            <PhotoCard
+              {...photo}
+              onDelete={refreshAll}
+              key={photo.id}
+              location={location}
+            />
           ))}
         </div>
       </div>

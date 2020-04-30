@@ -20,6 +20,9 @@ const { AuthRoutes } = auth
 
 auth.config.prepData = (data) => {
   const { user } = data
+  if (!user) {
+    return
+  }
   const location_photos = {}
   const location_map = {}
   user.photos
@@ -48,7 +51,6 @@ auth.config.prepData = (data) => {
     user.locations.filter((l) => l.id),
     (l) => l.last_photo,
   ).reverse()
-  return data
 }
 
 const App = () => {

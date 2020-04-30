@@ -28,6 +28,7 @@ const LocationList = gps.required(
           <gs.Marker
             location={`${gps.latitude},${gps.longitude}`}
             color="blue"
+            label="U"
           />
         </gs.StaticGoogleMap>
         <div className={css.h3()}>Select a location</div>

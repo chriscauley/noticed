@@ -34,8 +34,9 @@ def location_list(request):
     user_point = Point(float(lon), float(lat), srid=4326)
     distance = D(m=request.GET.get('distance', 1000))
 
-    locations = Location.objects.filter(photo__isnull=False).distinct().annotate(
-        distance=Distance('point', user_point)).order_by('distance')[:10]
+    locations = Location.objects.filter(photo__isnull=False).distinct()
+    locations = locations.annotate(distance=Distance('point', user_point))
+    locations = locations.filter(distance__lt=distance).order_by('distance')[:10]
     query = f"location={lat},{lon}&rankby=distance&type=establishment"
     nearbysearch, new = NearbySearch.objects.get_or_create(query=query)
     attrs = ['name', 'id', 'public_photo_count', 'latitude', 'longitude']

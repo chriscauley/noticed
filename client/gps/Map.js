@@ -2,7 +2,7 @@ import React from 'react'
 import connect from './connect'
 import css from '@unrest/css'
 import { formatDistanceToNowStrict } from 'date-fns'
-import GoogleStaticMap from '../GoogleStaticMap'
+import * as gs from 'react-static-google-map'
 
 export default connect((props) => {
   const { gps } = props
@@ -32,7 +32,12 @@ export default connect((props) => {
           ))}
         </div>
         <div className="w-full sm:w-1/2">
-          <GoogleStaticMap latlon={latlon} size="400x400" />
+          <gs.StaticGoogleMap
+            size="400x400"
+            apiKey="AIzaSyAQDgeeUI0TbWvr5yi8CtBfSF2YjJb8jRs"
+          >
+            <gs.Marker location={latlon} color="blue" />
+          </gs.StaticGoogleMap>
         </div>
       </div>
     </div>

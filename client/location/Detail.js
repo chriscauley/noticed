@@ -5,7 +5,7 @@ import RestHook from '@unrest/react-rest-hook'
 
 import UploadNotice from './UploadNotice'
 import PhotoCard from '../photo/PhotoCard'
-import GoogleStaticMap from '../GoogleStaticMap'
+import * as gs from 'react-static-google-map'
 
 const withLocation = RestHook(
   '/api/location/location/${match.params.location_id}/',
@@ -26,7 +26,12 @@ export default auth.withAuth(
       <div>
         <h2 className={css.h2()}>{location.name}</h2>
         <div>This place has {location.public_photos.length} notices.</div>
-        <GoogleStaticMap latlon={`${latitude},${longitude}`} size="400x400" />
+        <gs.StaticGoogleMap
+          size="400x400"
+          apiKey="AIzaSyAQDgeeUI0TbWvr5yi8CtBfSF2YjJb8jRs"
+        >
+          <gs.Marker location={`${latitude},${longitude}`} color="blue" />
+        </gs.StaticGoogleMap>
         <div className="flex flex-wrap">
           {location.public_photos.map((photo) => (
             <div key={photo.id} className="p-2 w-full md:w-1/2">

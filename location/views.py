@@ -37,7 +37,7 @@ def location_list(request):
     locations = Location.objects.filter(photo__isnull=False).distinct().annotate(distance=Distance('point', user_point)).order_by('distance')[:10]
     query = f"location={lat},{lon}&rankby=distance&type=establishment"
     nearbysearch, new = NearbySearch.objects.get_or_create(query=query)
-    attrs = ['name', 'id', 'public_photo_count']
+    attrs = ['name', 'id', 'public_photo_count', 'latitude', 'longitude']
     return JsonResponse({
         'locations': [l.to_json(attrs) for l in locations],
         'nearbysearch': {

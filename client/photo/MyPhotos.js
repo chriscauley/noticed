@@ -2,6 +2,7 @@ import React from 'react'
 import auth from '@unrest/react-auth'
 import css from '@unrest/css'
 import PhotoCard from './PhotoCard'
+import { sortBy } from 'lodash'
 
 class MyPhotos extends React.Component {
   render() {
@@ -13,23 +14,26 @@ class MyPhotos extends React.Component {
       ...photo,
       location: user.locations.find((l) => l.id === photo.location_id),
     }))
+
     return (
       <div>
         <div className={css.h1()}>Your Photos</div>
         <div className="flex flex-wrap">
-          {photos.map((photo) => (
-            <div key={photo.id} className="p-2 w-full md:w-1/2">
-              <PhotoCard {...photo} onDelete={refetch}>
-                <a
-                  href={`#/photo/${photo.id}/locate/`}
-                  className={css.button()}
-                >
-                  <i className={css.icon('edit mr-2')} />
-                  {photo.location ? photo.location.name : 'has not location'}
-                </a>
-              </PhotoCard>
-            </div>
-          ))}
+          {sortBy(photos, (p) => p.location)
+            .reverse()
+            .map((photo) => (
+              <div key={photo.id} className="p-2 w-full md:w-1/2">
+                <PhotoCard {...photo} onDelete={refetch}>
+                  <a
+                    href={`#/photo/${photo.id}/locate/`}
+                    className={css.button()}
+                  >
+                    <i className={css.icon('edit mr-2')} />
+                    {photo.location ? photo.location.name : 'has not location'}
+                  </a>
+                </PhotoCard>
+              </div>
+            ))}
         </div>
       </div>
     )

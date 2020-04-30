@@ -19,4 +19,4 @@ class Photo(BaseModel):
         return self.filename
 
     class Meta:
-        ordering = ('created', )
+        ordering = ('-updated', )

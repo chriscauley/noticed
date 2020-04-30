@@ -44,9 +44,10 @@ auth.config.prepData = (data) => {
       photos: location_photos[_id],
     }))
 
-  user.recent_locations = sortBy(user.locations, (l) => l.last_photo).filter(
-    (l) => l.id,
-  )
+  user.recent_locations = sortBy(
+    user.locations.filter((l) => l.id),
+    (l) => l.last_photo,
+  ).reverse()
   return data
 }
 

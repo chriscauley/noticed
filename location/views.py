@@ -62,7 +62,7 @@ def location_detail(request, object_id):
     return JsonResponse({'location': data})
 
 
-def add_photo(user):
+def add_photos(user):
     photos = Photo.objects.filter(user=user).prefetch_related('location')
 
     location_updated = {}
@@ -81,7 +81,7 @@ def add_photo(user):
     }
 
 
-user_json.get_extra = add_photo
+user_json.get_extra = add_photos
 
 
 @login_required
@@ -112,8 +112,12 @@ def delete_photo(request):
 @login_required
 def locate_photo(request):
     data = json.loads(request.body.decode('utf-8') or "{}")
-    location = Location.from_place_id(data['place_id'])
     photo = get_object_or_404(Photo, id=data.get('photo_id'), user=request.user)
-    photo.location = location
+    if 'place_id' in data:
+        photo.location = Location.from_place_id(data['place_id'])
+    elif 'location_id' in data:
+        photo.location = Location.objects.get(id=data['location_id'])
+    else:
+        raise NotImplementedError('Must specify place_id or location_id')
     photo.save()
     return JsonResponse({})

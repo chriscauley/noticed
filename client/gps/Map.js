@@ -2,17 +2,14 @@ import React from 'react'
 import connect from './connect'
 import css from '@unrest/css'
 import { formatDistanceToNowStrict } from 'date-fns'
+import GoogleStaticMap from '../GoogleStaticMap'
 
 export default connect((props) => {
   const { gps } = props
   if (!gps.source) {
     return 'No GPS Coordinates set'
   }
-  const latlon = `${gps.latitude.toFixed(6)},${gps.longitude.toFixed(6)}`
-  const url = 'https://maps.googleapis.com/maps/api/staticmap?'
-  const params =
-    'zoom=16&size=400x400&key=AIzaSyAQDgeeUI0TbWvr5yi8CtBfSF2YjJb8jRs'
-  const query = `&center=${latlon}&markers=${latlon}`
+  const latlon = `${gps.latitude.toFixed(5)},${gps.longitude.toFixed(5)}`
   const rows = [
     ['Current', gps.display],
     ['Source', gps.source],
@@ -35,7 +32,7 @@ export default connect((props) => {
           ))}
         </div>
         <div className="w-full sm:w-1/2">
-          <img src={url + params + query} />
+          <GoogleStaticMap latlon={latlon} size="400x400" />
         </div>
       </div>
     </div>

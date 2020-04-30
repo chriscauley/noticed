@@ -26,6 +26,7 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
     "parcel": "^1.12.4",
+    "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-jsonschema-form": "2.0.0-alpha.1",

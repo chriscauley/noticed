@@ -18,6 +18,8 @@ class BaseLocationModel(BaseModel):
     SOURCE_CHOICES = _choices(['unknown', 'google'])
     external_id = models.CharField(max_length=32, null=True, blank=True)
     external_source = models.CharField(max_length=16, default='google')
+    latitude = lambda self: self.point[1]
+    longitude = lambda self: self.point[0]
 
     def __str__(self):
         return self.name

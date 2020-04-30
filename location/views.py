@@ -55,7 +55,7 @@ def location_from_place_id(request):
 
 def location_detail(request, object_id):
     location = get_object_or_404(Location, id=object_id)
-    attrs = ['name', 'id', 'public_photos']
+    attrs = ['name', 'id', 'public_photos', 'latitude', 'longitude']
     data = location.to_json(attrs)
 
     return JsonResponse({'location': data})

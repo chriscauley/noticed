@@ -32,7 +32,7 @@ const actions = {
         latitude,
         longitude,
         source: 'gps',
-        display: 'Current Location',
+        display: 'GPS',
       })
     }
     const error = (e) => store.setState({ error: e.message })

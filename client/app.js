@@ -14,8 +14,6 @@ import MyPhotos from './photo/MyPhotos'
 import Zoom from './photo/Zoom'
 import photo from './photo'
 
-auth.config.login_redirect = '/images/'
-
 const { AuthRoutes } = auth
 
 auth.config.prepData = (data) => {

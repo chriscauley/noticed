@@ -6,6 +6,17 @@ import gps from '../gps'
 
 const { AuthNavLink } = auth
 
+const auth_links = [
+  (user) => ({
+    text: 'Photos',
+    to: '/photo/',
+    badge: countMissingPhotos(user),
+  }),
+]
+
+const countMissingPhotos = (user) =>
+  user.photos.filter((p) => !p.location_id).length
+
 export default function Nav() {
   return (
     <header className={css.nav.outer()}>
@@ -15,11 +26,8 @@ export default function Nav() {
         </Link>
       </section>
       <section className={css.nav.section('flex items-center')}>
-        <Link to="/photo/" className={css.button()}>
-          Photos
-        </Link>
         <gps.NavLink />
-        <AuthNavLink />
+        <AuthNavLink links={auth_links} badge={countMissingPhotos} />
       </section>
     </header>
   )

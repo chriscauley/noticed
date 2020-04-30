@@ -14,28 +14,31 @@ const _onChange = (props) => ({ target }) => {
     return
   }
 
-  Array.from(files).forEach((file) => {
-    const reader = new FileReader()
-    reader.onload = () => {
-      const filename = target.value.split(/[\\/]/).pop()
-      const src = reader.result.replace(/;/, `;name=${filename};`)
-      post('/api/location/noticephoto/', {
-        src,
-        location_id,
-        notice_id,
-      }).then(({ error }) => {
-        if (error) {
-          alert.error(error)
-        } else {
-          const m =
-            'Notice added! Since you uploaded this notice you can delete it.'
-          alert.success(m)
-          props.auth.refetch()
+  const promises = Array.from(files).map(
+    (file) =>
+      new Promise((resolve, _reject) => {
+        const reader = new FileReader()
+        reader.onload = () => {
+          const filename = target.value.split(/[\\/]/).pop()
+          const src = reader.result.replace(/;/, `;name=${filename};`)
+          post('/api/location/noticephoto/', {
+            src,
+            location_id,
+            notice_id,
+          }).then(resolve)
         }
-      })
-    }
-    reader.readAsDataURL(file)
-  })
+        reader.readAsDataURL(file)
+      }),
+  )
+
+  const done = (results) => {
+    const success_count = results.filter(({ error }) =>
+      error ? alert.error(error) : true,
+    ).length
+    success_count && alert.success(`${success_count} uploads successful`)
+    props.auth.refetch()
+  }
+  return Promise.all(promises).then(done)
 }
 
 const Button = auth.withAuth(

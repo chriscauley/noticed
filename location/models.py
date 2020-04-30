@@ -139,6 +139,7 @@ class GoogleMapsCacheModel(models.Model):
 
 
 class Geocode(GoogleMapsCacheModel):
+    query_param = 'address'
     BASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
 
 
@@ -148,3 +149,9 @@ class NearbySearch(GoogleMapsCacheModel):
 
 class PlaceDetails(GoogleMapsCacheModel):
     BASE_URL = "https://maps.googleapis.com/maps/api/place/details/json"
+
+
+class Autocomplete(GoogleMapsCacheModel):
+    query_param = 'input'
+    BASE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
+

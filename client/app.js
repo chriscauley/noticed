@@ -34,6 +34,10 @@ const App = () => {
       </BrowserRouter>
       <HashRouter>
         <Route path={'/gps/search/'} component={gps.GeocodeModal} />
+        <Route
+          path={'/photo/:photo_id/locate/'}
+          component={location.AutocompleteModal}
+        />
       </HashRouter>
       <Footer />
       <alert.List />

@@ -20,7 +20,10 @@ class MyPhotos extends React.Component {
           {photos.map((photo) => (
             <div key={photo.id} className="p-2 w-full md:w-1/2">
               <PhotoCard {...photo} onDelete={refetch}>
-                <a href={`#/photo/edit/${photo.id}`} className={css.button()}>
+                <a
+                  href={`#/photo/${photo.id}/locate/`}
+                  className={css.button()}
+                >
                   <i className={css.icon('edit mr-2')} />
                   {photo.location ? photo.location.name : 'has not location'}
                 </a>

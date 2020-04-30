@@ -10,12 +10,13 @@ from django.shortcuts import get_object_or_404
 from unrest.user.views import user_json
 from unrest.decorators import login_required
 
-from location.models import Location, Notice, Geocode, NearbySearch, PlaceDetails
+from location.models import Location, Notice, Geocode, NearbySearch, PlaceDetails, Autocomplete
 from media.models import Photo
 
 MODELS = {
     'nearbysearch': NearbySearch,
     'geocode': Geocode,
+    'autocomplete': Autocomplete,
 }
 
 
@@ -24,8 +25,8 @@ def cached_google(request, model_name):
     query = request.GET.get('query', None)
     if not query:
         return JsonResponse({})
-    obj, new = model.objects.get_or_create(query='address=' + query)
-    return JsonResponse({'results': obj.result['results']})
+    obj, new = model.objects.get_or_create(query=model.query_param+'=' + query)
+    return JsonResponse(obj.result)
 
 
 def location_list(request):
@@ -99,4 +100,13 @@ def delete_photo(request):
     data = json.loads(request.body.decode('utf-8') or "{}")
     photo = get_object_or_404(Photo, id=data.get('id'), user=request.user)
     photo.delete()
+    return JsonResponse({})
+
+@login_required
+def locate_photo(request):
+    data = json.loads(request.body.decode('utf-8') or "{}")
+    location = Location.from_place_id(data['place_id'])
+    photo = get_object_or_404(Photo, id=data.get('photo_id'), user=request.user)
+    photo.location = location
+    photo.save()
     return JsonResponse({})

@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, HashRouter, Route } from 'react-router-dom'
+import { sortBy } from 'lodash'
 
 import Home from './screens/Home'
 import Nav from './components/Nav'
@@ -15,6 +16,38 @@ import photo from './photo'
 auth.config.login_redirect = '/images/'
 
 const { AuthRoutes } = auth
+
+auth.config.prepData = (data) => {
+  const { user } = data
+  const location_photos = {}
+  const location_map = {}
+  user.photos
+    .map((photo) => ({
+      ...photo,
+      location: user.locations.find((l) => l.id === photo.location_id),
+    }))
+    .forEach((photo) => {
+      const location = photo.location || {
+        id: 0,
+        name: 'Photos without a location',
+      }
+      location_map[location.id] = location
+      location_photos[location.id] = location_photos[location.id] || []
+      location_photos[location.id].push(photo)
+    })
+
+  user.locations = Object.keys(location_map)
+    .sort()
+    .map((_id) => ({
+      ...location_map[_id],
+      photos: location_photos[_id],
+    }))
+
+  user.recent_locations = sortBy(user.locations, (l) => l.last_photo).filter(
+    (l) => l.id,
+  )
+  return data
+}
 
 const App = () => {
   return (

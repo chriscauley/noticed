@@ -61,21 +61,26 @@ def location_detail(request, object_id):
     return JsonResponse({'location': data})
 
 
-def add_photo_ids(user):
+def add_photo(user):
     photos = Photo.objects.filter(user=user).prefetch_related('location')
-    photos = [p.to_json(['id', 'src', 'location_id']) for p in photos]
-    photo_ids = [p['id'] for p in photos]
 
+    location_updated = {}
+    for photo in photos:
+        location_updated[photo.location_id] = location_updated.get(photo.location_id) or photo.updated
+
+    photos = [p.to_json(['id', 'src', 'location_id']) for p in photos]
     location_ids = [p['location_id'] for p in photos if p['location_id']]
     locations = Location.objects.filter(id__in=location_ids)
+    locations = [l.to_json(['id', 'name']) for l in locations]
+    for location in locations:
+        location['last_photo'] = location_updated[location['id']]
     return {
         'photos': photos,
-        'photo_ids': photo_ids,
-        'locations': [l.to_json(['id', 'name']) for l in locations]
+        'locations': locations,
     }
 
 
-user_json.get_extra = add_photo_ids
+user_json.get_extra = add_photo
 
 
 @login_required

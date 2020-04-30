@@ -11,6 +11,7 @@ import location from './location'
 import gps from './gps'
 import alert from './alert'
 import MyPhotos from './photo/MyPhotos'
+import Zoom from './photo/Zoom'
 import photo from './photo'
 
 auth.config.login_redirect = '/images/'
@@ -71,6 +72,7 @@ const App = () => {
           path={'/photo/:photo_id/locate/'}
           component={location.AutocompleteModal}
         />
+        <Route path={`/photo/zoom/:src/`} component={Zoom} />
       </HashRouter>
       <Footer />
       <alert.List />

@@ -160,4 +160,3 @@ class PlaceDetails(GoogleMapsCacheModel):
 class Autocomplete(GoogleMapsCacheModel):
     query_param = 'input'
     BASE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
-

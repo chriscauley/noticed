@@ -2,6 +2,7 @@ import React from 'react'
 import css from '@unrest/css'
 import auth from '@unrest/react-auth'
 import { post } from '@unrest/react-jsonschema-form'
+import { ZoomButton } from './Zoom'
 
 import DeleteButton from '../DeleteButton'
 
@@ -13,11 +14,12 @@ const PhotoCard = (props) => {
   const deletePhoto = () => post('/api/media/photo/delete/', { id })
   return (
     <div className="relative mb-4">
-      {owner && (
-        <div className="absolute top-0 right-0 m-4">
+      <div className="absolute top-0 right-0 m-4">
+        <ZoomButton src={src} />
+        {owner && (
           <DeleteButton action={deletePhoto} onDelete={onDelete} name="Photo" />
-        </div>
-      )}
+        )}
+      </div>
       <img src={src} />
       <div className="absolute bottom-0 right-0 m-4">
         {owner && (

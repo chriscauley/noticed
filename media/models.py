@@ -17,5 +17,6 @@ class Photo(BaseModel):
 
     def __str__(self):
         return self.filename
+
     class Meta:
         ordering = ('created', )

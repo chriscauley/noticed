@@ -25,7 +25,7 @@ def cached_google(request, model_name):
     query = request.GET.get('query', None)
     if not query:
         return JsonResponse({})
-    obj, new = model.objects.get_or_create(query=model.query_param+'=' + query)
+    obj, new = model.objects.get_or_create(query=model.query_param + '=' + query)
     return JsonResponse(obj.result)
 
 
@@ -34,7 +34,8 @@ def location_list(request):
     user_point = Point(float(lon), float(lat), srid=4326)
     distance = D(m=request.GET.get('distance', 1000))
 
-    locations = Location.objects.filter(photo__isnull=False).distinct().annotate(distance=Distance('point', user_point)).order_by('distance')[:10]
+    locations = Location.objects.filter(photo__isnull=False).distinct().annotate(
+        distance=Distance('point', user_point)).order_by('distance')[:10]
     query = f"location={lat},{lon}&rankby=distance&type=establishment"
     nearbysearch, new = NearbySearch.objects.get_or_create(query=query)
     attrs = ['name', 'id', 'public_photo_count', 'latitude', 'longitude']
@@ -106,6 +107,7 @@ def delete_photo(request):
     photo = get_object_or_404(Photo, id=data.get('id'), user=request.user)
     photo.delete()
     return JsonResponse({})
+
 
 @login_required
 def locate_photo(request):

@@ -43,7 +43,7 @@ const GeocodeResults = connect(
       gps.actions.save({
         latitude: lat,
         longitude: lng,
-        display: formatted_address,
+        display: formatted_address.split(',')[0],
         source: 'google',
         place_id,
       })

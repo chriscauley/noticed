@@ -15,6 +15,9 @@ export default function Nav() {
         </Link>
       </section>
       <section className={css.nav.section('flex items-center')}>
+        <Link to="/photo/" className={css.button()}>
+          Photos
+        </Link>
         <gps.NavLink />
         <AuthNavLink />
       </section>

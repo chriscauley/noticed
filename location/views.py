@@ -32,9 +32,9 @@ def cached_google(request, model_name):
 def location_list(request):
     lat, lon = request.GET['latlon'].split(',')
     user_point = Point(float(lon), float(lat), srid=4326)
-    distance = D(m=request.GET.get('distance', 100))
+    distance = D(m=request.GET.get('distance', 1000))
 
-    locations = Location.objects.annotate(distance=Distance('point', user_point)).order_by('distance')
+    locations = Location.objects.filter(photo__isnull=False).distinct().annotate(distance=Distance('point', user_point)).order_by('distance')[:10]
     query = f"location={lat},{lon}&rankby=distance&type=establishment"
     nearbysearch, new = NearbySearch.objects.get_or_create(query=query)
     attrs = ['name', 'id', 'public_photo_count']

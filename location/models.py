@@ -140,19 +140,23 @@ class GoogleMapsCacheModel(models.Model):
         super().save(*args, **kwargs)
 
 
+# Used to find "current location" of user by zipcode or address
 class Geocode(GoogleMapsCacheModel):
     query_param = 'address'
     BASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
 
 
+# DEPRECATED
 class NearbySearch(GoogleMapsCacheModel):
     BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 
 
+# Used in Location.from_place_id
 class PlaceDetails(GoogleMapsCacheModel):
     BASE_URL = "https://maps.googleapis.com/maps/api/place/details/json"
 
 
+# Searching to /api/media/photo/locate
 class Autocomplete(GoogleMapsCacheModel):
     query_param = 'input'
     BASE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json"

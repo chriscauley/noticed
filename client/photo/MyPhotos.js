@@ -6,7 +6,7 @@ import PhotoCard from './PhotoCard'
 class MyPhotos extends React.Component {
   render() {
     const { user, loading, refetch } = this.props.auth
-    if (!user || loading) {
+    if (!user && loading) {
       return null
     }
 

@@ -74,7 +74,7 @@ def add_photos(user):
     for photo in photos:
         location_updated[photo.location_id] = location_updated.get(photo.location_id) or photo.updated
 
-    photos = [p.to_json(['id', 'src', 'location_id']) for p in photos]
+    photos = [p.to_json(['id', 'src', 'thumbnail', 'location_id']) for p in photos]
     location_ids = [p['location_id'] for p in photos if p['location_id']]
     locations = Location.objects.filter(id__in=location_ids)
     locations = [l.to_json(['id', 'name']) for l in locations]

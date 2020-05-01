@@ -66,6 +66,7 @@ class Location(BaseLocationModel):
             photos.append({
                 'src': photo.src.url,
                 'id': photo.id,
+                'thumbnail': photo.thumbnail,
             })
         return photos
 

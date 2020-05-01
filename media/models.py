@@ -3,6 +3,7 @@ import arrow
 from django.conf import settings
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
+from sorl.thumbnail import get_thumbnail
 
 from unrest.decorators import cached_property
 from unrest.models import BaseModel, _choices
@@ -82,6 +83,10 @@ class Photo(BaseModel):
             date_str, time_str = exif['DateTimeDigitized'].split(' ')
             date_str = date_str.replace(':', '-')
             self.datetime = arrow.get(f'{date_str} {time_str}').datetime
+
+    @property
+    def thumbnail(self):
+        return get_thumbnail(self.src, 'x650', crop='center').url
 
     class Meta:
         ordering = ('-datetime', )

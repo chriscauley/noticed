@@ -9,11 +9,11 @@ import DeleteButton from '../DeleteButton'
 const isOwner = (_id, user) => user && user.photos.find((p) => p.id === _id)
 
 const PhotoCard = (props) => {
-  const { src, id, onDelete, auth, location } = props
+  const { src, thumbnail, id, onDelete, auth, location } = props
   const owner = isOwner(id, auth.user)
   const deletePhoto = () => post('/api/media/photo/delete/', { id })
   return (
-    <div className="px-2 mb-4 w-full sm:w-1/2">
+    <div className="px-2 mb-4 w-full sm:w-1/2 lg:w-1/3">
       <div className="relative">
         <div className="absolute top-0 right-0 m-4">
           <ZoomButton src={src} />
@@ -25,7 +25,7 @@ const PhotoCard = (props) => {
             />
           )}
         </div>
-        <img src={src} />
+        <img src={thumbnail} />
         <div className="absolute bottom-0 right-0 m-4">
           {owner && (
             <a

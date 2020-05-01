@@ -961,7 +961,7 @@
   dependencies:
     "@unrest/css" chriscauley/unrest-css
 
-"@unrest/react-react-progress-bar@chriscauley/unrest-react-progress-bar":
+"@unrest/react-progress-bar@chriscauley/unrest-react-progress-bar":
   version "0.0.1"
   resolved "https://codeload.github.com/chriscauley/unrest-react-progress-bar/tar.gz/140b70a3e527bdb3a299b4c82f6bdd1b16f15903"
 

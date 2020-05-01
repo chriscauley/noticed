@@ -19,7 +19,7 @@
     "@unrest/css": "chriscauley/unrest-css#9b801bf",
     "@unrest/react-auth": "chriscauley/unrest-react-auth#6f7b744",
     "@unrest/react-jsonschema-form": "chriscauley/unrest-react-jsonschema-form#d5d5cd0",
-    "@unrest/react-react-progress-bar": "chriscauley/unrest-react-progress-bar",
+    "@unrest/react-progress-bar": "chriscauley/unrest-react-progress-bar",
     "@unrest/react-rest-hook": "chriscauley/unrest-react-rest-hook#dc26015",
     "@unrest/tailwind": "chriscauley/unrest-tailwindcss#ea729b7",
     "classnames": "^2.2.6",

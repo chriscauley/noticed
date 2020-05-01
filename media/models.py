@@ -48,12 +48,17 @@ class Photo(BaseModel):
     DATASOURCE_CHOICES = _choices(['exif', 'exifgps', 'database', 'error'])
     datasource = models.CharField(max_length=16, choices=DATASOURCE_CHOICES, null=True, blank=True)
 
+    latitude = property(lambda self: self.point and self.point[1])
+    longitude = property(lambda self: self.point and self.point[0])
+
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
         try:
             self.filename = self.filename or str(self.src).split('/')[-1]
             self.assign_exif()
-        except:
+        except Exception as e:
             self.datasource = 'error'
+            print(e)
         self.datetime = self.datetime or self.created
         super().save(*args, **kwargs)
 
@@ -77,7 +82,6 @@ class Photo(BaseModel):
             date_str, time_str = exif['DateTimeDigitized'].split(' ')
             date_str = date_str.replace(':', '-')
             self.datetime = arrow.get(f'{date_str} {time_str}').datetime
-        self.save()
 
     class Meta:
         ordering = ('-datetime', )

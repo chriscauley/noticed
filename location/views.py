@@ -12,6 +12,7 @@ from unrest.decorators import login_required
 
 from location.models import Location, Notice, Geocode, NearbySearch, PlaceDetails, Autocomplete
 from media.models import Photo
+from media.forms import PhotoForm
 
 MODELS = {
     'nearbysearch': NearbySearch,
@@ -90,18 +91,10 @@ user_json.get_extra = add_photos
 
 @login_required
 def upload_notice(request):
-    data = json.loads(request.body.decode('utf-8') or "{}")
-
-    # A lot of this is reused from gif-party/party/views.py
-    # Abstract it out?
-    uri = DataURI(data.pop('src'))
-    f = ContentFile(uri.data, name=uri.name)
-    photo = Photo(user=request.user)
-    if data.get('location_id'):
-        photo.location = get_object_or_404(Location, id=data['location_id'])
-    photo.src.save(f.name, f)
-    photo.save()
-
+    form = PhotoForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.request = request
+        form.save()
     return JsonResponse({})
 
 

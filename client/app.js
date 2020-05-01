@@ -13,6 +13,7 @@ import alert from './alert'
 import MyPhotos from './photo/MyPhotos'
 import Zoom from './photo/Zoom'
 import photo from './photo'
+import pb from '@unrest/react-progress-bar'
 
 const { AuthRoutes } = auth
 
@@ -78,6 +79,7 @@ const App = () => {
       </HashRouter>
       <Footer />
       <alert.List />
+      <pb.Bar />
     </div>
   )
 }

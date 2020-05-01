@@ -36,7 +36,7 @@ def cached_google(request, model_name):
 def location_list(request):
     lat, lon = request.GET['latlon'].split(',')
     user_point = Point(float(lon), float(lat), srid=4326)
-    distance = D(m=request.GET.get('distance', 1000))
+    distance = D(m=request.GET.get('distance', 2000))
 
     locations = Location.objects.filter(photo__isnull=False).distinct()
     locations = locations.annotate(distance=Distance('point', user_point))

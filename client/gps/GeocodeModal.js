@@ -8,6 +8,31 @@ import Modal from '../components/Modal'
 
 const withGeocode = RestHook('/api/geocode/?query=${query || ""}')
 
+const DummyLocation = connect((props) => {
+  const onClick = () => {
+    props.gps.actions.save({
+      latitude: 39.9539431,
+      longitude: -75.2116346,
+      display: 'West Philly',
+      source: 'dummy',
+    })
+    window.location.hash = ''
+  }
+
+  return (
+    <div>
+      <div className={css.h3()}>Sample Location</div>
+      <p className="mb-2">
+        Right now there is not a lot of data. Use this location to see a
+        location with a lot of data.
+      </p>
+      <button className={css.button()} onClick={onClick}>
+        West Philly
+      </button>
+    </div>
+  )
+})
+
 export default class GeocodeModal extends React.Component {
   state = {}
   onSubmit = (formData) => this.setState(formData)
@@ -25,6 +50,7 @@ export default class GeocodeModal extends React.Component {
       <Modal>
         <Form schema={schema} onSubmit={this.onSubmit} />
         <GeocodeResults query={this.state.query} />
+        <DummyLocation />
       </Modal>
     )
   }

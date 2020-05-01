@@ -9,7 +9,8 @@ class BaseNavLink extends React.Component {
     this.toggle()
     callback()
   }
-  toggle = () => this.setState({ open: !this.state.open })
+  // toggle = () => this.setState({ open: !this.state.open })
+  toggle = () => (window.location.hash = '#/gps/search/')
 
   render() {
     const { gps } = this.props

@@ -42,4 +42,4 @@ const PhotoCard = (props) => {
   )
 }
 
-export default auth.withAuth(PhotoCard)
+export default auth.connect(PhotoCard)

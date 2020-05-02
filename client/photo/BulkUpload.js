@@ -46,7 +46,7 @@ const _onChange = (props) => ({ target }) => {
 }
 
 const Button = progress.connect(
-  auth.withAuth(
+  auth.connect(
     alert.connect((props) => {
       const user = props.auth.user
       const _btn =

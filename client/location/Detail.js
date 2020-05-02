@@ -10,7 +10,7 @@ const withLocation = RestHook(
   '/api/location/location/${match.params.location_id}/',
 )
 
-export default auth.withAuth(
+export default auth.connect(
   withLocation((props) => {
     const { loading, location, refetch } = props.api
     if (loading && !location) {

@@ -14,7 +14,7 @@ const withAutocomplete = RestHook(
   '/api/autocomplete/?query=${query}&location=${gps.latlon}',
 )
 
-const RecentLocations = auth.withAuth((props) => {
+const RecentLocations = auth.connect((props) => {
   const { loading, user } = props.auth
   if (loading || !user) {
     return null
@@ -81,7 +81,7 @@ class AutocompleteModal extends React.Component {
   }
 }
 
-export default auth.withAuth(withRouter(alert.connect(AutocompleteModal)))
+export default auth.connect(withRouter(alert.connect(AutocompleteModal)))
 let last_predictions = []
 
 const AutocompleteResults = gps.connect(

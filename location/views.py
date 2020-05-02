@@ -91,9 +91,10 @@ user_json.get_extra = add_photos
 
 @login_required
 def upload_notice(request):
+    # request.headers['Contetnmultipart/form-data; boundary=----WebKitFormBoundaryEwxCoLTjjG8l164Y
     form = PhotoForm(request.POST, request.FILES)
+    form.request = request
     if form.is_valid():
-        form.request = request
         form.save()
     return JsonResponse({})
 

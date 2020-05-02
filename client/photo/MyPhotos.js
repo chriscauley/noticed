@@ -30,4 +30,4 @@ class MyPhotos extends React.Component {
   }
 }
 
-export default auth.withAuth(MyPhotos)
+export default auth.loginRequired(MyPhotos)

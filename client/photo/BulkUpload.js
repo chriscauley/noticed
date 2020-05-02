@@ -24,7 +24,7 @@ const _onChange = (props) => ({ target }) => {
     const formData = new FormData()
     formData.append('src', file)
     // TODO may want to integrate using formData with @unrest/rjsf/post
-    return fetch('/api/location/noticephoto/', {
+    return fetch('/api/schema/PhotoForm/', {
       method: 'POST',
       body: formData,
       headers: { 'X-CSRFToken': rjsf_config.getCSRF() },

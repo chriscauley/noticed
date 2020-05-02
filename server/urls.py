@@ -4,7 +4,7 @@ from django.urls import path
 from django.urls import path, re_path, include
 
 from location.views import location_list, location_detail, cached_google, location_from_place_id, delete_photo, locate_photo
-from unrest import views as unrest_views
+from unrest.views import spa
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -15,17 +15,6 @@ urlpatterns = [
     path('api/media/photo/delete/', delete_photo),
     path('api/media/photo/locate/', locate_photo),
     re_path('api/(nearbysearch|geocode|autocomplete)/', cached_google),
-    re_path('^(?:login|logout|signup|reset-password|new|location|gps|photo)/', unrest_views.index),
-    re_path('^$', unrest_views.index),
-    re_path('', include('unrest.user.urls')),
-    re_path('', include('unrest.schema.urls')),
+    re_path('^(location|gps|photo)/', spa),
+    re_path('', include('unrest.urls')),
 ]
-
-if settings.DEBUG:  # pragma: no cover
-    from django.views.static import serve
-    urlpatterns += [
-        re_path(r'^media/(?P<path>.*)$', serve, {
-            'document_root': settings.MEDIA_ROOT,
-            'show_indexes': True
-        }),
-    ]

@@ -4,17 +4,15 @@ dist
 node_modules
 
 # django related
-.venv
 .media
 .static
+server/settings/local.py
+
+# python specific
+.venv
+.coverage
+.htmlcov
 __pycache__
 
 # misc
-trash
 .DS_Store
-unrest
-server/settings/local.py
-_scripts
-.coverage
-.backups
-.htmlcov

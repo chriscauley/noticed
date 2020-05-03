@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'media',
 
     # unrest
+    'unrest',
     'unrest.nopass',
     'unrest.user',
 ]

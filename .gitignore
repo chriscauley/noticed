@@ -13,6 +13,8 @@ server/settings/local.py
 .coverage
 .htmlcov
 __pycache__
+unrest
+ur
 
 # misc
 .DS_Store

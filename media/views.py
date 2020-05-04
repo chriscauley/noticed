@@ -60,6 +60,14 @@ def delete_photo(request):
 
 
 @login_required
+def delete_photocrop(request):
+    data = json.loads(request.body.decode('utf-8') or "{}")
+    photo = get_object_or_404(PhotoCrop, id=data.get('id'), photo__user=request.user)
+    photo.delete()
+    return JsonResponse({})
+
+
+@login_required
 def locate_photo(request):
     data = json.loads(request.body.decode('utf-8') or "{}")
     photo = get_object_or_404(Photo, id=data.get('photo_id'), user=request.user)

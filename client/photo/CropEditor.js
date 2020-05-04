@@ -7,8 +7,29 @@ import auth from '@unrest/react-auth'
 import RestHook from '@unrest/react-rest-hook'
 import { post } from '@unrest/react-jsonschema-form'
 
+import DeleteButton from '../DeleteButton'
+
 const ref = React.createRef(null)
 const withCrops = RestHook('/api/media/photo/${match.params.photo_id}/crops/')
+
+const CropCard = (props) => {
+  const { url, id, onDelete, owner } = props
+  const _delete = () => post('/api/media/photocrop/delete/', { id })
+  return (
+    <div className="relative">
+      {owner && (
+        <div className="absolute top-0 right-0 m-4">
+          <DeleteButton
+            action={_delete}
+            onDelete={onDelete}
+            name="Photo Crop"
+          />
+        </div>
+      )}
+      <img src={url} />
+    </div>
+  )
+}
 
 class CropEditor extends React.Component {
   state = {
@@ -30,10 +51,10 @@ class CropEditor extends React.Component {
   }
 
   render() {
-    const photo_id = parseInt(this.props.match.params.photo_id)
     const { user } = this.props.auth
-    const { crops = [] } = this.props.api
+    const photo_id = parseInt(this.props.match.params.photo_id)
     const photo = user.photos.find((p) => p.id === photo_id)
+    const { crops = [], refetch } = this.props.api
     if (!photo) {
       // TODO
       return (
@@ -51,9 +72,12 @@ class CropEditor extends React.Component {
         <div className="w-1/3 px-2 h-full">
           {this.state.loading && <div>Loading...</div>}
           {crops.map((crop) => (
-            <div key={crop.url}>
-              <img src={crop.url} />
-            </div>
+            <CropCard
+              {...crop}
+              key={crop.url}
+              onDelete={() => refetch(this.props)}
+              owner={!!user.photos.find((p) => p.id === photo_id)}
+            />
           ))}
         </div>
         <div className="w-2/3 px-2">

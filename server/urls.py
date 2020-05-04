@@ -3,7 +3,8 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import path, re_path, include
 
-from location.views import location_list, location_detail, cached_google, location_from_place_id, delete_photo, locate_photo, photo_crops, crop_photo
+from location.views import location_list, location_detail, cached_google, location_from_place_id
+from media.views import delete_photo, locate_photo, photo_crops, crop_photo
 from unrest.views import spa
 
 urlpatterns = [

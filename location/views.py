@@ -11,7 +11,7 @@ from unrest.user.views import user_json
 from unrest.decorators import login_required
 
 from location.models import Location, Notice, Geocode, NearbySearch, PlaceDetails, Autocomplete
-from media.models import Photo
+from media.models import Photo, PhotoCrop
 from media.forms import PhotoForm
 
 MODELS = {
@@ -65,6 +65,26 @@ def location_detail(request, object_id):
     data = location.to_json(attrs)
 
     return JsonResponse({'location': data})
+
+
+def photo_crops(request, photo_id):
+    photo = get_object_or_404(Photo, id=photo_id)
+    return JsonResponse(photo.to_json(['id', 'crops']))
+
+
+def crop_photo(request):
+    data = json.loads(request.body.decode('utf-8') or "{}")
+    photo = get_object_or_404(Photo, id=data.get('photo_id'))
+    if photo.user != request.user:
+        raise NotImplementedError('You cannot edit this photo')
+    if data.get('photocrop_id'):
+        photocrop = get_object_or_404(PhotoCrop, id=data.get(photocrop_id))
+    else:
+        photocrop = PhotoCrop(photo=photo)
+    for attr in ['x', 'y', 'width', 'height']:
+        setattr(photocrop, attr, round(data[attr]))
+    photocrop.save()
+    return JsonResponse({})
 
 
 def add_photos(user):

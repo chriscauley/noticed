@@ -1,8 +1,10 @@
 import arrow
+from io import BytesIO
 
 from django.conf import settings
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
+from django.core.files.base import ContentFile
 from sorl.thumbnail import get_thumbnail
 
 from unrest.decorators import cached_property
@@ -52,6 +54,11 @@ class Photo(BaseModel):
     latitude = property(lambda self: self.point and self.point[1])
     longitude = property(lambda self: self.point and self.point[0])
 
+    @cached_property
+    def crops(self):
+        attrs = ['url', 'x', 'y', 'width', 'height', 'id']
+        return [p.to_json(attrs) for p in self.photocrop_set.all()]
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         try:
@@ -90,3 +97,38 @@ class Photo(BaseModel):
 
     class Meta:
         ordering = ('-datetime', )
+
+
+class PhotoCrop(BaseModel):
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    src = models.ImageField(upload_to="photocrop")
+    x = models.IntegerField()
+    y = models.IntegerField()
+    width = models.IntegerField()
+    height = models.IntegerField()
+
+    def makecrop(self):
+        # Don' crop outside bounds of image
+        width = min(self.photo.src.width, self.x + self.width)
+        height = min(self.photo.src.height, self.y + self.height)
+        box = (max(0, self.x), max(0, self.y), width, height)
+
+        name = self.photo.src.name.split('/')[-1].rsplit('.', 1)
+        name[0] += "{},{}x{},{}".format(*box)
+        name = '.'.join(name)
+        crop = Image.open(self.photo.src.path).crop(box)
+        if crop.mode == "CMYK":
+            crop = crop.convert("RGB")
+        buf = BytesIO()
+        crop.save(buf, "PNG")
+        buf.seek(0)
+        self.src.save(name, ContentFile(buf.read()))
+
+    def save(self, *args, **kwargs):
+        if not self.src:
+            self.makecrop()
+        super().save(*args, **kwargs)
+
+    @property
+    def url(self):
+        return self.src.url

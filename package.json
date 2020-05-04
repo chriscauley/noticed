@@ -29,6 +29,7 @@
     "parcel": "^1.12.4",
     "query-string": "^6.12.1",
     "react": "^16.13.1",
+    "react-cropper": "^1.3.0",
     "react-dom": "^16.13.1",
     "react-jsonschema-form": "2.0.0-alpha.1",
     "react-router-dom": "^5.1.2",

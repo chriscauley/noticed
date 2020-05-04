@@ -1,9 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 import auth from '@unrest/react-auth'
 import { post } from '@unrest/react-jsonschema-form'
-import { ZoomButton } from './Zoom'
 
+import { ZoomButton } from './Zoom'
 import DeleteButton from '../DeleteButton'
 
 const isOwner = (_id, user) => user && user.photos.find((p) => p.id === _id)
@@ -28,13 +29,18 @@ const PhotoCard = (props) => {
         <img src={thumbnail} />
         <div className="absolute bottom-0 right-0 m-4">
           {owner && (
-            <a
-              href={`#/photo/${id}/locate/`}
-              className={css.button[location ? 'primary' : 'warning']()}
-            >
-              <i className={css.icon('edit mr-2')} />
-              {location ? location.name : 'needs location'}
-            </a>
+            <>
+              <Link to={`/photo/crop/${id}/`} className={css.button()}>
+                <i className={css.icon('crop')} />
+              </Link>
+              <a
+                href={`#/photo/${id}/locate/`}
+                className={css.button[location ? 'primary' : 'warning']()}
+              >
+                <i className={css.icon('edit mr-2')} />
+                {location ? location.name : 'needs location'}
+              </a>
+            </>
           )}
         </div>
       </div>

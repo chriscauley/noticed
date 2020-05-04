@@ -11,9 +11,11 @@ import location from './location'
 import gps from './gps'
 import alert from './alert'
 import MyPhotos from './photo/MyPhotos'
+import CropEditor from './photo/CropEditor'
 import Zoom from './photo/Zoom'
 import photo from './photo'
 import pb from '@unrest/react-progress-bar'
+import 'regenerator-runtime' // async polyfill
 
 const { AuthRoutes } = auth
 
@@ -64,7 +66,8 @@ const App = () => {
             component={location.Detail}
           />
           <Route path={'/gps/map/'} component={gps.Map} />
-          <Route path={'/photo/'} component={MyPhotos} />
+          <Route exact path={'/photo/'} component={MyPhotos} />
+          <Route path={'/photo/crop/:photo_id/'} component={CropEditor} />
           <AuthRoutes />
         </div>
         <photo.BulkUpload />

@@ -80,18 +80,18 @@ class CropEditor extends React.Component {
             />
           ))}
         </div>
-        <div className="w-2/3 px-2">
+        <div className="w-2/3 px-2 relative">
           <Cropper
             ref={ref}
             src={photo.src}
             style={{ height: '90%', width: '100%' }}
             crop={this.crop}
           />
-        </div>
-        <div>
-          <button className={css.button()} onClick={this.addCrop}>
-            Crop it up
-          </button>
+          <div className="absolute top-0 right-0 m-4">
+            <button className={css.button()} onClick={this.addCrop}>
+              Crop it up
+            </button>
+          </div>
         </div>
       </div>
     )

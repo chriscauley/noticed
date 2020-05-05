@@ -18,6 +18,7 @@
     "@babel/preset-env": "^7.9.5",
     "@unrest/css": "chriscauley/unrest-css#9b801bf",
     "@unrest/react-auth": "chriscauley/unrest-react-auth#6f7b744",
+    "@unrest/react-core": "chriscauley/unrest-react-core",
     "@unrest/react-jsonschema-form": "chriscauley/unrest-react-jsonschema-form#d5d5cd0",
     "@unrest/react-progress-bar": "chriscauley/unrest-react-progress-bar",
     "@unrest/react-rest-hook": "chriscauley/unrest-react-rest-hook#dc26015",

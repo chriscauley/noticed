@@ -8,7 +8,7 @@ const { AuthNavLink } = auth
 
 const auth_links = [
   (user) => ({
-    text: 'Photos',
+    children: 'Photos',
     to: '/photo/',
     badge: countMissingPhotos(user),
   }),

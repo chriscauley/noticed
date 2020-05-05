@@ -955,6 +955,10 @@
   dependencies:
     "@unrest/css" chriscauley/unrest-css
 
+"@unrest/react-core@chriscauley/unrest-react-core":
+  version "0.0.1"
+  resolved "https://codeload.github.com/chriscauley/unrest-react-core/tar.gz/5dd51335bf41256f794acd724362be6cbeaf02e3"
+
 "@unrest/react-jsonschema-form@chriscauley/unrest-react-jsonschema-form#d5d5cd0":
   version "0.0.1"
   resolved "https://codeload.github.com/chriscauley/unrest-react-jsonschema-form/tar.gz/d5d5cd099a38eda0dc10895337cf34e4abc6d5c1"

@@ -8,6 +8,7 @@ from unrest.decorators import login_required
 from location.models import Location
 from media.models import Photo, PhotoCrop
 
+import media.forms
 
 def photo_crops(request, photo_id):
     photo = get_object_or_404(Photo, id=photo_id)

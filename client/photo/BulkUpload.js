@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {
-  config as rjsf_config,
+  config as ur_config,
   afterFetch,
   handleError,
-} from '@unrest/react-jsonschema-form'
+} from '@unrest/core'
 import progress from '@unrest/react-progress-bar'
 import auth from '@unrest/react-auth'
 import css from '@unrest/css'
@@ -27,7 +27,7 @@ const _onChange = (props) => ({ target }) => {
     return fetch('/api/schema/PhotoForm/', {
       method: 'POST',
       body: formData,
-      headers: { 'X-CSRFToken': rjsf_config.getCSRF() },
+      headers: { 'X-CSRFToken': ur_config.getCSRF() },
     }).then(afterFetch, handleError)
   })
 

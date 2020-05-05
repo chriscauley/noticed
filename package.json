@@ -16,6 +16,7 @@
     "@babel/core": "^7.0.0-0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.9.5",
+    "@unrest/core": "chriscauley/unrest-core",
     "@unrest/css": "chriscauley/unrest-css#9b801bf",
     "@unrest/react-auth": "chriscauley/unrest-react-auth#6f7b744",
     "@unrest/react-core": "chriscauley/unrest-react-core",

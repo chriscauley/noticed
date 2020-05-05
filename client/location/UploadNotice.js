@@ -1,6 +1,6 @@
 // TODO DEPRECATED
 import React from 'react'
-import { post } from '@unrest/react-jsonschema-form'
+import { post } from '@unrest/core'
 import css from '@unrest/css'
 
 import alert from '../alert'

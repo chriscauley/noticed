@@ -5,7 +5,7 @@ import 'cropperjs/dist/cropper.css'
 import css from '@unrest/css'
 import auth from '@unrest/react-auth'
 import RestHook from '@unrest/react-rest-hook'
-import { post } from '@unrest/react-jsonschema-form'
+import { post } from '@unrest/core'
 
 import DeleteButton from '../DeleteButton'
 

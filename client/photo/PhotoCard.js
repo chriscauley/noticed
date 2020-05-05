@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import css from '@unrest/css'
 import auth from '@unrest/react-auth'
-import { post } from '@unrest/react-jsonschema-form'
+import { post } from '@unrest/core'
 
 import { ZoomButton } from './Zoom'
 import DeleteButton from '../DeleteButton'
